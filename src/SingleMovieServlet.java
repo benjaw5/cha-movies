@@ -16,8 +16,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 // Declaring a WebServlet called SingleStarServlet, which maps to url "/api/single-star"
-@WebServlet(name = "SingleStarServlet", urlPatterns = "/api/single-star")
-public class SingleStarServlet extends HttpServlet {
+@WebServlet(name = "SingleMovieServlet", urlPatterns = "/api/single-movie")
+public class SingleMovieServlet extends HttpServlet {
     private static final long serialVersionUID = 2L;
 
     // Create a dataSource which registered in web.xml
@@ -39,7 +39,7 @@ public class SingleStarServlet extends HttpServlet {
 
         response.setContentType("application/json"); // Response mime type
 
-        // Retrieve parameter id from url request.
+        // Retrieve parameter movie id from url request.
         String param_id = request.getParameter("id");
 
         // The log message can be found in localhost log
@@ -54,11 +54,14 @@ public class SingleStarServlet extends HttpServlet {
 
             // Construct a query with parameter represented by "?"
 
-            String query = "SELECT s.id, s.name, s.birthYear, group_concat(DISTINCT m.title) movies FROM \n" +
-                    "(SELECT * from stars as s WHERE s.id = ?) s\n" +
-                    "JOIN stars_in_movies sm ON s.id = sm.starId\n" +
-                    "JOIN movies m ON sm.movieId = m.id\n" +
-                    "GROUP BY s.id;";
+            String query = "SELECT m.id, m.title, m.year, m.director, r.rating, group_concat(DISTINCT g.name) genres, group_concat(DISTINCT s.name) stars FROM \n" +
+                    "(SELECT * FROM movies m WHERE id = ?) m\n" +
+                    "JOIN ratings r ON m.id = r.movieId\n" +
+                    "JOIN genres_in_movies gm ON m.id = gm.movieId\n" +
+                    "JOIN genres g ON gm.genreId = g.id\n" +
+                    "JOIN stars_in_movies sm ON m.id = sm.movieId\n" +
+                    "JOIN stars s ON sm.starId = s.id\n" +
+                    "GROUP BY m.id\n";
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
@@ -74,28 +77,27 @@ public class SingleStarServlet extends HttpServlet {
             JsonArray jsonArray = new JsonArray();
 
             // Iterate through each row of rs
+
             while (rs.next()) {
 
-                String starId = rs.getString("id");
-                String starName = rs.getString("name");
-                String starDob = rs.getString("birthYear");
-
-                if (starDob == null) {
-                    starDob = "N/A";
-                }
-
-
-                String starMovies = rs.getString("movies");
+                String movie_id = rs.getString("id");
+                String movie_title = rs.getString("title");
+                String movie_year = rs.getString("year");
+                String movie_director = rs.getString("director");
+                String movie_rating = rs.getString("rating");
+                String movie_stars = rs.getString("stars");
+                String movie_genres = rs.getString("genres");
 
                 // Create a JsonObject based on the data we retrieve from rs
-
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("star_id", starId);
-                jsonObject.addProperty("star_name", starName);
-                jsonObject.addProperty("star_dob", starDob);
-                jsonObject.addProperty("star_movies", starMovies);
+                jsonObject.addProperty("movie_id", movie_id);
+                jsonObject.addProperty("movie_title", movie_title);
+                jsonObject.addProperty("movie_year", movie_year);
+                jsonObject.addProperty("movie_director", movie_director);
+                jsonObject.addProperty("movie_rating", movie_rating);
+                jsonObject.addProperty("movie_stars", movie_stars);
+                jsonObject.addProperty("movie_genres", movie_genres);
 
-git a
                 jsonArray.add(jsonObject);
             }
             rs.close();
