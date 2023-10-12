@@ -95,7 +95,6 @@ public class SingleStarServlet extends HttpServlet {
                 jsonObject.addProperty("star_dob", starDob);
                 jsonObject.addProperty("star_movies", starMovies);
 
-git a
                 jsonArray.add(jsonObject);
             }
             rs.close();

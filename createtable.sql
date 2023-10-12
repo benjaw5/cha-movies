@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS moviedb;
+
+USE moviedb;
 
 CREATE TABLE IF NOT EXISTS movies (
     id varchar(10) NOT NULL,

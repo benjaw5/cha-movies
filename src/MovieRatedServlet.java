@@ -25,7 +25,7 @@ public class MovieRatedServlet extends HttpServlet {
     private DataSource dataSource;
 
     public void init(ServletConfig config) {
-        try {
+        try
             dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
         } catch (NamingException e) {
             e.printStackTrace();
@@ -57,7 +57,7 @@ public class MovieRatedServlet extends HttpServlet {
                     "JOIN genres g ON gm.genreId = g.id\n" +
                     "JOIN stars_in_movies sm ON top_movies.id = sm.movieId\n" +
                     "JOIN stars s ON s.id = sm.starId\n" +
-                    "GROUP BY top_movies.id\n" +
+                    "GROUP BY top_movies.id, top_movies.rating\n" +
                     "order by top_movies.rating DESC;";
 
 
