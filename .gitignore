@@ -166,6 +166,13 @@ buildNumber.properties
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
 
+# war file
+target
+
+# sensitive information
+WebContent/META-INF
+WebContent/WEB-INF
+
 
 # End of https://www.gitignore.io/api/java,maven,eclipse,java-web,intellij
 
