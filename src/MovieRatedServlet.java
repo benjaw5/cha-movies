@@ -25,7 +25,7 @@ public class MovieRatedServlet extends HttpServlet {
     private DataSource dataSource;
 
     public void init(ServletConfig config) {
-        try
+        try {
             dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
         } catch (NamingException e) {
             e.printStackTrace();
