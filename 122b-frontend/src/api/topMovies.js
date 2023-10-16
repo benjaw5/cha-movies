@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 async function getTopMovies() {
-    const apiLink = "/cs122b_fall22_project1_star_example_war/api/movies";
+    const apiLink = "/cs122b-fall22-project1-star-example/api/movies";
 
     try {
         const response = await fetch(apiLink, {
