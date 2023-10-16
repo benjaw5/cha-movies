@@ -9,7 +9,7 @@ function MovieBanner(movieObject) {
     })
     return (
         <tr>
-            <td><a href={"/cs122b_fall22_project1_star_example/movies/"+movie.movie_id}>{movie.movie_title}</a></td>
+            <td><a href={"/cs122b_fall22_project1_star_example_war/movies/"+movie.movie_id}>{movie.movie_title}</a></td>
             <td>{movie.movie_year}</td>
             <td>{movie.movie_director}</td>
             <td>{movie.movie_rating}</td>
