@@ -8,7 +8,7 @@ import What from './components/test';
 function App() {
     return (
         <>
-        <BrowserRouter basename={process.env.REACT_APP_ROUTER_BASE}>
+        <BrowserRouter>
             <Routes>
                 <Route path='/cs122b_fall22_project1_star_example' element = {<HomePage/>} />
                 
