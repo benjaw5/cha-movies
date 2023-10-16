@@ -61,7 +61,7 @@ public class SingleMovieServlet extends HttpServlet {
                     "JOIN genres g ON gm.genreId = g.id\n" +
                     "JOIN stars_in_movies sm ON m.id = sm.movieId\n" +
                     "JOIN stars s ON sm.starId = s.id\n" +
-                    "GROUP BY m.id;";
+                    "GROUP BY m.id, m.title, m.year, m.director, r.rating;";
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
