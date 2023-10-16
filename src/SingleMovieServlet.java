@@ -54,14 +54,14 @@ public class SingleMovieServlet extends HttpServlet {
 
             // Construct a query with parameter represented by "?"
 
-            String query = "SELECT m.id, m.title, m.year, m.director, r.rating, group_concat(DISTINCT g.name) genres, group_concat(DISTINCT s.name) stars FROM \n" +
+            String query = "SELECT m.id, m.title, m.year, m.director, r.rating, group_concat(DISTINCT g.name) genres, group_concat(DISTINCT CONCAT(s.id, ':', s.name)) stars FROM\n" +
                     "(SELECT * FROM movies m WHERE id = ?) m\n" +
                     "JOIN ratings r ON m.id = r.movieId\n" +
                     "JOIN genres_in_movies gm ON m.id = gm.movieId\n" +
                     "JOIN genres g ON gm.genreId = g.id\n" +
                     "JOIN stars_in_movies sm ON m.id = sm.movieId\n" +
                     "JOIN stars s ON sm.starId = s.id\n" +
-                    "GROUP BY m.id\n";
+                    "GROUP BY m.id;";
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);

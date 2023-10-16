@@ -1,16 +1,21 @@
-
+import ActorLink from '../components/ActorLink';
 
 function MovieBanner(movieObject) {
-    let movie = movieObject.movieObject
+    let movie = movieObject.movieObject;
+    let actorInfo = movie.movie_stars.split(',');
+    const actorList = actorInfo.map(info => {
+        let infoSplit = info.split(':');
+        return <ActorLink path = {'actors/' + infoSplit[0]} id = {infoSplit[0]} name = {infoSplit[1]}/>
+    })
     return (
-        <li>
-            <a href={"/movies/"+movie.movie_id}><h3>{movie.movie_title}</h3></a>
-            <p>{movie.movie_year}</p>
-            <p>{movie.movie_director}</p>
-            <p>{movie.movie_rating}</p>
-            <p>{movie.movie_stars}</p>
-            <p>{movie.movie_genres}</p>
-        </li>
+        <tr>
+            <td><a href={"/movies/"+movie.movie_id}>{movie.movie_title}</a></td>
+            <td>{movie.movie_year}</td>
+            <td>{movie.movie_director}</td>
+            <td>{movie.movie_rating}</td>
+            <td>{actorList}</td>
+            <td>{movie.movie_genres}</td>
+        </tr>
     )
 }
 

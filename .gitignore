@@ -170,8 +170,8 @@ buildNumber.properties
 target
 
 # sensitive information
-WebContent/META-INF
-WebContent/WEB-INF
+#WebContent/META-INF
+#WebContent/WEB-INF
 
 
 # End of https://www.gitignore.io/api/java,maven,eclipse,java-web,intellij
