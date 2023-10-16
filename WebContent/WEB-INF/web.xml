@@ -6,6 +6,10 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/index.html</location>
+    </error-page>
     <resource-ref>
         <description>MySQL DataSource example</description>
         <res-ref-name>jdbc/moviedb</res-ref-name>

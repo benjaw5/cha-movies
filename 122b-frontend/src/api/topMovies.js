@@ -1,5 +1,7 @@
+import React, {Component} from 'react';
+
 async function getTopMovies() {
-    const apiLink = "http://localhost:8080/cs122b_fall22_project1_star_example/api/movies";
+    const apiLink = "/cs122b_fall22_project1_star_example/api/movies";
 
     try {
         const response = await fetch(apiLink, {

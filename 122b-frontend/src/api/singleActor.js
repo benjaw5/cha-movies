@@ -1,6 +1,8 @@
+import React, {Component} from 'react';
+
 
 async function getSingleActor(id) {
-    let apiLink = "http://localhost:8080/cs122b_fall22_project1_star_example/api/single-star?id="+id;
+    let apiLink = "/cs122b_fall22_project1_star_example/api/single-star?id="+id;
     try {
         const response = await fetch(apiLink, {
             method: "GET"
