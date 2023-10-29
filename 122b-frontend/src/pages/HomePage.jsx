@@ -1,39 +1,46 @@
 import {useState, useEffect} from 'react'
-import '../styles/HomePage.css'
-import getTopMovies from '../api/topMovies.js'
-import MovieBanner from '../components/MovieBanner.jsx'
+import getAllGenres from '../api/allGenres'
+import getAllTitles from '../api/allTitles';
+import GenreLink from '../components/GenreLink'
+import {Home, Selections} from '../styles/Home.style'
+import TitleLink from '../components/TitleLink';
 
 function HomePage() {
-    const [topMovieList, setTopMovieList] = useState([]);
+    const [genres, setGenres] = useState([])
+    const [titles, setTitles] = useState([])
 
     useEffect(() => {
-        getTopMovies().then(movieData => {
-            setTopMovieList(movieData)
+        getAllGenres().then(genreData => {
+            setGenres(genreData)
         }).catch(error => {
-            console.log("Error when getting top movies")
+            console.log("Error when getting all genres")
         })
     }, [])
 
-    const movieBanners = topMovieList?.map(movieObject => 
-        <MovieBanner movieObject = {movieObject}/>
-    )
-    
+    useEffect(() => {
+        getAllTitles().then(titleData => {
+            setTitles(titleData)
+        }).catch(error => {
+            console.log("Error when getting all titles")
+        })
+    }, [])
+
+    const genreLinks = genres.map(genreObject => 
+        <GenreLink id = {genreObject["id"]}
+                   genre = {genreObject["genre"]}/>)
+
+    const titleLinks = titles.map(titleObject => 
+    <TitleLink title = {titleObject}/>)
+
     return (
-        <>
-        <table>
-            <tbody>
-                <tr>
-                   <th>Title</th>
-                   <th>Year</th>
-                   <th>Director</th>
-                   <th>Rating</th>
-                   <th>Stars</th>
-                   <th>Genres</th>
-                </tr>
-            </tbody>
-            {movieBanners}
-        </table>
-        </>
+        <Home>
+            <Selections>
+                {titleLinks}
+            </Selections>
+            <Selections>
+                {genreLinks}
+            </Selections>
+        </Home>
         
     )
 }

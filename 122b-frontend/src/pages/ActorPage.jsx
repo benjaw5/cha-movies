@@ -10,9 +10,6 @@ function ActorPage() {
 
     useEffect(() => {
         getSingleActor(actorId).then(data => {
-            if (data["loginError"] == 1) {
-                window.location.href = "/cha-movies/login/";
-            }
             setActorObject(data[0])
         })
     }, [])
@@ -32,7 +29,7 @@ function ActorPage() {
 
     return (
             <>
-            <a href={"/cha-movie"}><h3>{"Top 20 Movies"}</h3></a>
+            <a href={"/cha-movies"}><h3>{"Top 20 Movies"}</h3></a>
             <p>{actorObject.star_name}</p>
             <p>{actorObject.star_dob}</p>
             <p>{movieList}</p>

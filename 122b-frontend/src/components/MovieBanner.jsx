@@ -7,6 +7,7 @@ function MovieBanner(movieObject) {
         let infoSplit = info.split(':');
         return <ActorLink path = {'actors/' + infoSplit[0]} id = {infoSplit[0]} name = {infoSplit[1]}/>
     })
+ 
     return (
         <tr>
             <td><a href={"/cha-movies/movies/"+movie.movie_id}>{movie.movie_title}</a></td>

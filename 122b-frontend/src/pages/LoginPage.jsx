@@ -9,14 +9,14 @@ function LoginPage() {
         
         try {
             
-            const response = await fetch('/cha-movies/api/login', {
+            const response = await fetch('http://localhost:8000/cha-movies/api/login', {
                 method: 'POST',
                 body: `username=${username}&password=${password}`,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 }
             })
-            
+            console.log(response)
 
             if (response.ok) {
                 window.location.href = "/cha-movies/";

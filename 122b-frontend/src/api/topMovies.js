@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 
 async function getTopMovies() {
-    const apiLink = "/cha-movies/api/movies";
+    const apiLink = "http://localhost:8000/cha-movies/api/movies";
 
     try {
         const response = await fetch(apiLink, {
-            method: "GET"
+            method: "GET",
+
         });
         const data = await response.json();
         return data

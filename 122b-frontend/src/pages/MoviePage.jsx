@@ -6,13 +6,11 @@ import getSingleMovie from '../api/singleMovie'
 function MoviePage() {
     const [movieObject, setMovieObject] = useState([]);
     const [actorList, setActorList] = useState([]);
-    const {movieId} = useParams()
+    const {movieId} = useParams();
 
     useEffect(() => {
-        getSingleMovie(movieId).then(data => {
-            if (data["loginError"] == 1) {
-                window.location.href = "/cha-movies/login/";
-            }
+        getSingleMovie("http://localhost:8000/cha-movies/api/single-movie?id="+movieId).then(data => {
+
             setMovieObject(data[0])
         })
     }, [])
@@ -34,7 +32,7 @@ function MoviePage() {
 
     return (
             <>
-            <a href={"/cha-movie/"}><h3>{"Top 20 Movies"}</h3></a>
+            <a href={"/cha-movies/"}><h3>{"Top 20 Movies"}</h3></a>
             <p>{movieObject.movie_title}</p>
             <p>{movieObject.movie_year}</p>
             <p>{movieObject.movie_director}</p>

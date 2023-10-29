@@ -1,11 +1,12 @@
+import { checkResponseLogin } from "./loginRedirect";
 
-
-async function getSingleMovie(id) {
-    let apiLink = "/cha-movies/api/single-movie?id="+id;
+async function getSingleMovie(apiLink) {
     try {
         const response = await fetch(apiLink, {
-            method: "GET"
+            method: "GET",
+
         });
+        checkResponseLogin(response.status);
         const data = await response.json();
         return data
     }

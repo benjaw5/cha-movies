@@ -44,18 +44,6 @@ public class SingleMovieServlet extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
-        HttpSession session = request.getSession(false);
-
-        if (session == null) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("loginError", 1);
-            out.write(jsonObject.toString());
-            out.close();
-            response.setStatus(401);
-            return;
-        }
-
-
         // Retrieve parameter movie id from url request.
         String param_id = request.getParameter("id");
 
