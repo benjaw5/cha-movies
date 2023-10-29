@@ -1,7 +1,7 @@
 
 
 async function getSingleMovie(id) {
-    let apiLink = "/cs122b-fall22-project1-star-example/api/single-movie?id="+id;
+    let apiLink = "/cha-movies/api/single-movie?id="+id;
     try {
         const response = await fetch(apiLink, {
             method: "GET"
@@ -14,5 +14,7 @@ async function getSingleMovie(id) {
     }
 
 }
+
+
 
 export default getSingleMovie;

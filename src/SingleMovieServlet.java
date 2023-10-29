@@ -8,6 +8,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -39,14 +41,27 @@ public class SingleMovieServlet extends HttpServlet {
 
         response.setContentType("application/json"); // Response mime type
 
+        // Output stream to STDOUT
+        PrintWriter out = response.getWriter();
+
+        HttpSession session = request.getSession(false);
+
+        if (session == null) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("loginError", 1);
+            out.write(jsonObject.toString());
+            out.close();
+            response.setStatus(401);
+            return;
+        }
+
+
         // Retrieve parameter movie id from url request.
         String param_id = request.getParameter("id");
 
         // The log message can be found in localhost log
         request.getServletContext().log("getting id: " + param_id);
 
-        // Output stream to STDOUT
-        PrintWriter out = response.getWriter();
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
@@ -73,7 +88,6 @@ public class SingleMovieServlet extends HttpServlet {
 
             // Perform the query
             ResultSet rs = statement.executeQuery();
-            System.out.println(rs);
             JsonArray jsonArray = new JsonArray();
 
             // Iterate through each row of rs

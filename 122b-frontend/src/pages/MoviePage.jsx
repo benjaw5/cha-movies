@@ -10,6 +10,9 @@ function MoviePage() {
 
     useEffect(() => {
         getSingleMovie(movieId).then(data => {
+            if (data["loginError"] == 1) {
+                window.location.href = "/cha-movies/login/";
+            }
             setMovieObject(data[0])
         })
     }, [])
@@ -31,7 +34,7 @@ function MoviePage() {
 
     return (
             <>
-            <a href={"/cs122b-fall22-project1-star-example/"}><h3>{"Top 20 Movies"}</h3></a>
+            <a href={"/cha-movie/"}><h3>{"Top 20 Movies"}</h3></a>
             <p>{movieObject.movie_title}</p>
             <p>{movieObject.movie_year}</p>
             <p>{movieObject.movie_director}</p>

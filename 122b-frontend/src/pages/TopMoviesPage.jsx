@@ -1,9 +1,8 @@
 import {useState, useEffect} from 'react'
-import '../styles/HomePage.css'
 import getTopMovies from '../api/topMovies.js'
 import MovieBanner from '../components/MovieBanner.jsx'
 
-function HomePage() {
+function TopMoviesPage() {
     const [topMovieList, setTopMovieList] = useState([]);
 
     useEffect(() => {
@@ -14,23 +13,21 @@ function HomePage() {
         })
     }, [])
 
-    const movieBanners = topMovieList?.map(movieObject => 
+    const movieBanners = topMovieList.map(movieObject => 
         <MovieBanner movieObject = {movieObject}/>
     )
     
     return (
         <>
         <table>
-            <tbody>
-                <tr>
-                   <th>Title</th>
-                   <th>Year</th>
-                   <th>Director</th>
-                   <th>Rating</th>
-                   <th>Stars</th>
-                   <th>Genres</th>
-                </tr>
-            </tbody>
+            <tr>
+               <th>Title</th> 
+               <th>Year</th> 
+               <th>Director</th> 
+               <th>Rating</th> 
+               <th>Stars</th> 
+               <th>Genres</th> 
+            </tr>
             {movieBanners}
         </table>
         </>
@@ -38,4 +35,4 @@ function HomePage() {
     )
 }
 
-export default HomePage
+export default TopMoviesPage

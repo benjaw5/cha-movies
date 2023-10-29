@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 
 
-async function getSingleActor(id) {
-    let apiLink = "/cha-movies/api/single-star?id="+id;
+async function getAllGenres() {
+    let apiLink = "http://localhost:8000/cha-movies/api/genre";
     try {
         const response = await fetch(apiLink, {
             method: "GET"
@@ -11,10 +11,10 @@ async function getSingleActor(id) {
         return data
     }
     catch (error) {
-        console.error("Error when fetching top movies from ", apiLink);
+        console.error("Error when fetching genres from ", apiLink);
     }
 
 }
 
 
-export default getSingleActor;
+export default getAllGenres;
