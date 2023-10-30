@@ -4,6 +4,7 @@ import ActorLink from '../components/ActorLink';
 import getSingleMovie from '../api/singleMovie';
 import GenreLink from '../components/GenreLink';
 import CartButton from '../components/CartButton';
+import { MoviePageStyle } from '../styles/Movie.style';
 
 function MoviePage() {
     const [movieObject, setMovieObject] = useState([]);
@@ -45,7 +46,7 @@ function MoviePage() {
 
 
     return (
-            <>
+            <MoviePageStyle>
             <a href={JSON.parse(window.localStorage.getItem("PrevURL")) || '/cha-movies/ranked'}><h3>{"Previous Page"}</h3></a>
             <p>{movieObject.movie_title}</p>
             <p>{movieObject.movie_year}</p>
@@ -54,7 +55,7 @@ function MoviePage() {
             <p>{actorList}</p>
             <p>{movieObject.movie_rating}</p>
             <CartButton title={movieObject.movie_title} action="purchase" displayName="Purchase"/>
-            </>
+            </MoviePageStyle>
     )
 }
 

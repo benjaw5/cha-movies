@@ -19,7 +19,7 @@ function App() {
     return (
         <SiteStyle>
 
-        <NavbarStyle>
+        <NavbarStyle id="navbar">
         <a href="/cha-movies/" class="homeLink">Home</a>
         <Navbar />
         <a href="/cha-movies/ranked">Ranked Movies</a>
@@ -31,6 +31,9 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path='/cha-movies' element = {<HomePage/>} />
+
+
+
                 <Route path='/cha-movies/payment/confirmation' element={<ConfirmationPage/>} />
                 <Route path='/cha-movies/payment' element={<PaymentPage/>} />
                 <Route path='/cha-movies/cart' element = {<CartPage/>} />

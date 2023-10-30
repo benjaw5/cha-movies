@@ -18,6 +18,7 @@ function MovieBanner(movieObject) {
 
  
     return (
+        <>
         <tr>
             <td><a href={"/cha-movies/movies/"+movie.movie_id}>{movie.movie_title}</a></td>
             <td>{movie.movie_year}</td>
@@ -25,8 +26,10 @@ function MovieBanner(movieObject) {
             <td>{movie.movie_rating}</td>
             <td>{actorList}</td>
             <td>{genreList}</td>
-            <td><CartButton title = {movie.movie_title} action = "purchase" displayName="Purchase"/></td>
+            
         </tr>
+        <CartButton title = {movie.movie_title} action = "purchase" displayName="Purchase"/>
+        </>
     )
 }
 

@@ -21,3 +21,22 @@ export const MovieTable = styled.div`
     }
 
 `
+
+export const MoviePageStyle = styled.div`
+    a {
+        margin-left: 10px;
+        color: #007BFF;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    a:hover h3 {
+        color: #0056b3;
+    }
+
+    p {
+        font-size: 16px;
+        color: #333;
+        margin: 10px 0;
+    }
+`
