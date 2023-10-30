@@ -71,7 +71,7 @@ public class SingleGenreServlet extends HttpServlet {
             // Generate a SQL query
             String query = "SELECT m.id, m.title, m.director, m.year, r.rating, \n" +
                     "substring_index(group_concat(DISTINCT CONCAT(s.id, ':', s.name)), ',', 3) AS stars,\n" +
-                    "g.name genres\n" +
+                    "CONCAT(g.id, ':', g.name) genres\n" +
                     "FROM (SELECT movieId FROM genres_in_movies WHERE genreId = ?) gm \n" +
                     "JOIN movies m ON m.id = gm.movieId\n" +
                     "JOIN ratings r ON m.id = r.movieId\n" +

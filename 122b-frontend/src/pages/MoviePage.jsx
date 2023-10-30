@@ -1,16 +1,18 @@
 import {useState, useEffect} from 'react'
 import {useParams} from "react-router-dom";
 import ActorLink from '../components/ActorLink';
-import getSingleMovie from '../api/singleMovie'
+import getSingleMovie from '../api/singleMovie';
+import GenreLink from '../components/GenreLink';
+import CartButton from '../components/CartButton';
 
 function MoviePage() {
     const [movieObject, setMovieObject] = useState([]);
     const [actorList, setActorList] = useState([]);
+    const [genreList, setGenreList] = useState([]);
     const {movieId} = useParams();
 
     useEffect(() => {
         getSingleMovie("http://localhost:8000/cha-movies/api/single-movie?id="+movieId).then(data => {
-
             setMovieObject(data[0])
         })
     }, [])
@@ -27,18 +29,31 @@ function MoviePage() {
         }
     }, [movieObject])
 
+    useEffect(() => {
+        if (movieObject.movie_genres) {
+            let genreInfo = movieObject.movie_genres.split(',');
+            const getGenreList = genreInfo.map(info => {
+                let infoSplit = info.split(':');
+                return <GenreLink id = {infoSplit[0]} genre = {infoSplit[1]}/>
+            })
+            setGenreList(getGenreList);
+        }
+    }, [movieObject])
+
+
     
 
 
     return (
             <>
-            <a href={"/cha-movies/"}><h3>{"Top 20 Movies"}</h3></a>
+            <a href={JSON.parse(window.localStorage.getItem("PrevURL")) || '/cha-movies/ranked'}><h3>{"Previous Page"}</h3></a>
             <p>{movieObject.movie_title}</p>
             <p>{movieObject.movie_year}</p>
             <p>{movieObject.movie_director}</p>
-            <p>{movieObject.movie_genres}</p>
+            <p>{genreList}</p>
             <p>{actorList}</p>
             <p>{movieObject.movie_rating}</p>
+            <CartButton title={movieObject.movie_title} action="purchase" displayName="Purchase"/>
             </>
     )
 }

@@ -2,15 +2,6 @@ CREATE DATABASE IF NOT EXISTS moviedb;
 
 USE moviedb;
 
-CREATE TABLE IF NOT EXISTS user(
-    userid varchar(100) NOT NULL,
-    username varchar(100) NOT NULL,
-    password varchar(100) NOT NULL,
-    access_count int,
-    sessionid varchar(100),
-    PRIMARY KEY(userid)
-);
-
 CREATE TABLE IF NOT EXISTS movies (
     id varchar(10) NOT NULL,
     title varchar(100) NOT NULL,
@@ -84,5 +75,4 @@ CREATE TABLE IF NOT EXISTS ratings(
     FOREIGN KEY(movieId) REFERENCES movies(id)
 );
 
-INSERT IGNORE INTO user (userid, username, password)
-values("1", "root", "password");
+

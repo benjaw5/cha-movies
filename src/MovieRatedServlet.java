@@ -54,7 +54,7 @@ public class MovieRatedServlet extends HttpServlet {
 //            String query = "SELECT * from stars";
             String query = "SELECT top_movies.id, title, director, year, rating, \n" +
                     "substring_index(group_concat(DISTINCT CONCAT(s.id, ':', s.name)), ',', 3) AS stars, \n" +
-                    "substring_index(group_concat(DISTINCT g.name), ',', 3) AS genres FROM \n" +
+                    "substring_index(group_concat(DISTINCT CONCAT(g.id, ':',g.name)), ',', 3) AS genres FROM \n" +
                     "(SELECT * FROM movies m JOIN ratings r ON m.id = r.movieId order by rating desc limit 20) AS top_movies\n" +
                     "JOIN genres_in_movies gm ON top_movies.id = gm.movieId\n" +
                     "JOIN genres g ON gm.genreId = g.id\n" +

@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter("username");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         JsonObject responseJsonObject = new JsonObject();
@@ -40,10 +40,10 @@ public class LoginServlet extends HttpServlet {
 
         try (Connection conn = dataSource.getConnection()) {
 
-            String query = "SELECT * FROM user WHERE username = ? AND password = ?";
+            String query = "SELECT * FROM customers WHERE email = ? AND password = ?";
             PreparedStatement statement = conn.prepareStatement(query);
 
-            statement.setString(1, username);
+            statement.setString(1, email);
             statement.setString(2, password);
 
             ResultSet rs = statement.executeQuery();
@@ -54,10 +54,11 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
 
 
-                session.setAttribute("user", new User(username, password));
+                session.setAttribute("user", new User(email, password));
 
                 responseJsonObject.addProperty("status", "success");
                 responseJsonObject.addProperty("message", "success");
+                response.sendRedirect("/cha-movies/");
                 response.setStatus(200);
 
             } else {

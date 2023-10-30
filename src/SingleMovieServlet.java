@@ -44,17 +44,6 @@ public class SingleMovieServlet extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
-        HttpSession session = request.getSession(false);
-
-        if (session == null) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("loginError", 1);
-            out.write(jsonObject.toString());
-            out.close();
-            response.setStatus(401);
-            return;
-        }
-
 
         // Retrieve parameter movie id from url request.
         String param_id = request.getParameter("id");
@@ -69,7 +58,8 @@ public class SingleMovieServlet extends HttpServlet {
 
             // Construct a query with parameter represented by "?"
 
-            String query = "SELECT m.id, m.title, m.year, m.director, r.rating, group_concat(DISTINCT g.name) genres, group_concat(DISTINCT CONCAT(s.id, ':', s.name)) stars FROM\n" +
+            String query = "SELECT m.id, m.title, m.year, m.director, r.rating, group_concat(DISTINCT CONCAT(g.id, ':',g.name)) genres, " +
+                    "group_concat(DISTINCT CONCAT(s.id, ':', s.name)) stars FROM\n" +
                     "(SELECT * FROM movies m WHERE id = ?) m\n" +
                     "JOIN ratings r ON m.id = r.movieId\n" +
                     "JOIN genres_in_movies gm ON m.id = gm.movieId\n" +

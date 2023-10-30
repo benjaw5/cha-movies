@@ -71,7 +71,7 @@ public class SingleTitleServlet extends HttpServlet {
 
             // Generate a SQL query
             String query = String.format("SELECT m.id, m.title, m.year, m.director, r.rating, \n" +
-                    "group_concat(DISTINCT g.name) genres, \n" +
+                    "group_concat(DISTINCT CONCAT(g.id, ':',g.name)) genres, \n" +
                     "group_concat(DISTINCT CONCAT(s.id, ':', s.name)) stars FROM\n" +
                     "(SELECT * FROM movies m WHERE m.title LIKE '%s%%') m\n" +
                     "JOIN ratings r ON m.id = r.movieId\n" +

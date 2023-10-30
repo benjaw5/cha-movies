@@ -29,7 +29,7 @@ function ActorPage() {
 
     return (
             <>
-            <a href={"/cha-movies"}><h3>{"Top 20 Movies"}</h3></a>
+            <a href={JSON.parse(window.localStorage.getItem("PrevURL")) || '/cha-movies/ranked'}><h3>{"Previous Page"}</h3></a>
             <p>{actorObject.star_name}</p>
             <p>{actorObject.star_dob}</p>
             <p>{movieList}</p>
