@@ -1,5 +1,6 @@
-import { CartButtonStyle } from "../styles/Other.style"
-function CartButton({title, action, displayName, onClick = null}) {
+import { CartPageButtonStyle } from "../styles/Page.style"
+
+function CartOptions({title, action, displayName, onClick = null}) {
 
     const buttonClick = async e => {
         try {
@@ -24,14 +25,15 @@ function CartButton({title, action, displayName, onClick = null}) {
         }
     }
     return (
-        <CartButtonStyle>
+        <CartPageButtonStyle>
         <button onClick={() => {
             buttonClick()
             if (onClick) {onClick()}
-            }}>{displayName}</button>
-        </CartButtonStyle>
+            }}>{displayName}
+        </button>
+        </CartPageButtonStyle>
     )
     
 }
 
-export default CartButton
+export default CartOptions

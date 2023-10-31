@@ -22,7 +22,6 @@ public class LoginFilter implements Filter {
 
 
         // Check if this URL is allowed to access without logging in
-        System.out.println(httpRequest.getRequestURI());
         if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
             // Keep default action: pass along the filter chain
             chain.doFilter(request, response);
@@ -31,7 +30,7 @@ public class LoginFilter implements Filter {
 
         // Redirect to login page if the "user" attribute doesn't exist in session
         if (session.getAttribute("user") == null) {
-            httpResponse.sendRedirect("/cs122b-fall22-project1-star-example/login");
+            httpResponse.sendRedirect("/cha-movies/login");
         } else {
             chain.doFilter(request, response);
         }
@@ -42,14 +41,14 @@ public class LoginFilter implements Filter {
     }
 
     public void init(FilterConfig fConfig) {
-        allowedURIs.add("");
-//        allowedURIs.add("login");
-//        allowedURIs.add("/cha-movies/assets/index-94ab92f4.js");
-//        allowedURIs.add("/cha-movies/vite.svg");
-//        allowedURIs.add("/cha-movies/api/login");
-//        allowedURIs.add("/cha-movies/api/signup");
-//        allowedURIs.add("/cha-movies/api/title");
-//        allowedURIs.add("/cha-movies/api/genre");
+
+        allowedURIs.add("login");
+        allowedURIs.add("/cha-movies/assets/index-acf8fb27.js");
+        allowedURIs.add("/cha-movies/vite.svg");
+        allowedURIs.add("/cha-movies/api/login");
+        allowedURIs.add("/cha-movies/api/signup");
+        allowedURIs.add("/cha-movies/api/title");
+        allowedURIs.add("/cha-movies/api/genre");
 
     }
 

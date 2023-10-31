@@ -5,6 +5,12 @@ function LoginPage() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
 
+    useEffect(() => {
+        var checkout = document.getElementById('checkout-button');
+        if (checkout != null) {checkout.style.display = 'none';}
+    }, [])
+
+
     const submitHandler = async e => {
         e.preventDefault();
         

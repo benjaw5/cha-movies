@@ -23,7 +23,7 @@ function App() {
         <Navbar />
         <a href="/cha-movies/ranked">Ranked Movies</a>
         <a href="/cha-movies/login">Login</a>
-        <a href="/cha-movies/cart">Checkout</a>
+        <a href="/cha-movies/cart" id="checkout-button" >Checkout</a>
         </NavbarStyle>
 
 

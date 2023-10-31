@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import getCartItems from '../api/cartItems';
-import CartButton from '../components/CartButton';
+import CartOptions from '../components/CartOptions';
+import {CartPageStyle, CartTDStyle} from '../styles/Page.style';
 
 function Cart() {
     const [cartList, setCartList] = useState([]);
@@ -24,28 +25,33 @@ function Cart() {
                             <td>{key}</td>
 
                             <td>
-                            <CartButton 
+                            <CartTDStyle>
+                            <CartOptions 
                                 title={key} 
                                 action="increase" 
                                 displayName="+" 
                                 onClick={handleButtonClick}
                             />
                             {value}
-                            <CartButton 
+                            <CartOptions 
                                 title={key} 
                                 action="decrease" 
                                 displayName="-" 
                                 onClick={handleButtonClick}
                             />
+                            </CartTDStyle>
                             </td>
                             <td>1</td>
-                            <td>{1 * parseInt(value)}
-                            <CartButton 
+                            <td>
+                            <CartTDStyle>    
+                            {1 * parseInt(value)}
+                            <CartOptions 
                                 title={key} 
                                 action="delete" 
                                 displayName="x" 
                                 onClick={handleButtonClick}
                             />
+                            </CartTDStyle>
                             </td>
                         </tr>
                         )
@@ -60,7 +66,7 @@ function Cart() {
     
 
     return (
-        <>
+        <CartPageStyle>
         <table>
         <tr>
            <th>Title</th> 
@@ -72,7 +78,7 @@ function Cart() {
         </table>
         <h3 class="payment-total">Payment Total: {total}</h3>
         <a href={"/cha-movies/payment?total="+total} >Proceed to Payment</a>
-        </>
+        </CartPageStyle>
     )
 
 }

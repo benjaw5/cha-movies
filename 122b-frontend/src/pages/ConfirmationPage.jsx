@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 import getCartItems from '../api/cartItems';
-import confirmSales from '../api/confirmSales';
-
+import confirmSales from '../api/confirmSales'
+import { CartPageStyle } from '../styles/Page.style';
 
 function ConfirmationPage() {
     const [dataList, setDataList] = useState([]);
@@ -38,7 +38,7 @@ function ConfirmationPage() {
             }
             setTotal(temp_total);
         });
-    }, []);
+    }, [total]);
 
     useEffect(() => {
         if (dataList) {
@@ -51,7 +51,7 @@ function ConfirmationPage() {
     
 
     return (
-        <>
+        <CartPageStyle>
         <table>
         <tr>
            <th>Sale ID</th>
@@ -63,7 +63,7 @@ function ConfirmationPage() {
         {cartList}
         </table>
         <h3 class="payment-total">Payment Total: {total}</h3>
-        </>
+        </CartPageStyle>
     )
 
 }

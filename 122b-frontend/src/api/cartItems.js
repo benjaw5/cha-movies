@@ -11,7 +11,7 @@ async function getCartItems() {
         return data
     }
     catch (e) {
-        console.log("Error when adding item to cart: ", error);
+        console.log("Error when adding item to cart: ", e);
     }
 }
 

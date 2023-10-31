@@ -34,11 +34,9 @@ public class CartServlet extends HttpServlet {
         if (previousItems == null) {
             previousItems = new HashMap<String, Integer>();
         }
-        System.out.println("GET REQUEST: ");
 
 
         for (Map.Entry<String, Integer> i : previousItems.entrySet()) {
-            System.out.println(i.getKey());
             responseJsonObject.addProperty(i.getKey(), String.valueOf(i.getValue()));
         }
 

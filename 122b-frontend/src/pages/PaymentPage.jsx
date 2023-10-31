@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import checkPayment from '../api/checkPayment';
 import { useLocation } from 'react-router-dom';
+import { PaymentPageStyle } from '../styles/Page.style';
 
 function PaymentPage() {
     const [creditNum, setCreditNum] = useState("");
@@ -29,7 +30,7 @@ function PaymentPage() {
     } 
  
     return (
-        <>
+        <PaymentPageStyle>
         <form name="payment" id="payment-form" onSubmit={submitHandler}>
             <div>Credit Card Number: <input type="text" name="credit_num" onChange={e => setCreditNum(e.target.value)}/> </div>
             <div>First Name: <input type="text" name="first_name" onChange={e => setFirstName(e.target.value)}/> </div>
@@ -38,7 +39,7 @@ function PaymentPage() {
             <h3 class="payment-total">Payment Total: {payment_total}</h3>
             <input type="submit" value="Place Order" />
         </form>
-    </>
+        </PaymentPageStyle>
     )
 
 }

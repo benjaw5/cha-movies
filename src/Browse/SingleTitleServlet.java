@@ -82,7 +82,6 @@ public class SingleTitleServlet extends HttpServlet {
                     "GROUP BY m.id, m.title, m.year, m.director, r.rating;", param_title);
 
 
-            System.out.println(query);
             PreparedStatement statement = dbCon.prepareStatement(query);
             request.getServletContext().log("query：" + query);
 
