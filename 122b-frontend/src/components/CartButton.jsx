@@ -1,9 +1,9 @@
-
+import { CartButtonStyle } from "../styles/Other.style"
 function CartButton({title, action, displayName, onClick = null}) {
 
     const buttonClick = async e => {
         try {
-            const response = await fetch(`http://localhost:8000/cha-movies/api/cart`, {
+            const response = await fetch(`/cha-movies/api/cart`, {
             method: 'POST',
             body: `item=${title}&action=${action}`,
             headers: {
@@ -25,10 +25,12 @@ function CartButton({title, action, displayName, onClick = null}) {
     }
 
     return (
+        <CartButtonStyle>
         <button onClick={() => {
             buttonClick()
             if (onClick) {onClick()}
             }}>{displayName}</button>
+        </CartButtonStyle>
     )
     
 }

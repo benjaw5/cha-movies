@@ -10,7 +10,7 @@ function LoginPage() {
         
         try {
             
-            const response = await fetch('http://localhost:8000/cha-movies/api/login', {
+            const response = await fetch('/cha-movies/api/login', {
                 method: 'POST',
                 body: `email=${email}&password=${password}`,
                 headers: {
@@ -34,8 +34,12 @@ function LoginPage() {
     return (
         <LoginStyle>
             <form name="login" onSubmit={submitHandler}>
-                Email: <input type="text" name="email" onChange={e => setEmail(e.target.value)}/> <br/>
-                Password: <input type="password" name="password" onChange={e => setPassword(e.target.value)}/> <br/>
+                Email: <input type="text" name="email" onChange={e => setEmail(e.target.value)}/> 
+                <br/>
+                
+                Password: <input type="password" name="password" onChange={e => setPassword(e.target.value)}/> 
+                <br/>
+                
                 <input type="submit" value="Login" />
             </form>
         </LoginStyle>

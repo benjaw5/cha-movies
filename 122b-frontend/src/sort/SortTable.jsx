@@ -33,7 +33,7 @@ function SortTable({setSortTitle, setSortRating, setSortOrder}){
 
     return (
         <div className="Sorting">
-            <h4>Sort by:</h4>
+            <h4>Sort</h4>
             <select className="title-select" onChange={sortSelect}>
                 {options.map(option => (
                     <option value={option.value}>{option.label}</option>

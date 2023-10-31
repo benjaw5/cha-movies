@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react'
 import getTopMovies from '../api/topMovies.js'
 import MovieBanner from '../components/MovieBanner.jsx'
 import Pagination from "../pagination/Pagination.jsx";
-import Nmovies from '../pagination/Nmovies.jsx';
-import SortTable from '../sort/SortTable.jsx';
 import sortMovieData from '../sort/sortMovieData.js';
+import MovieTable from '../components/MovieTable.jsx';
+import PageOptions from '../pagination/PageOptions.jsx';
 
 function HomePage() {
     const [topMovieList, setTopMovieList] = useState([]);
@@ -51,33 +51,10 @@ function HomePage() {
 // sorting: https://www.material-react-table.com/docs/guides/sorting
     return (
         <>
-        <div>
-            <Nmovies
-                setMoviePerPage={setMoviePerPage}
-                currentMoviePerPage={moviePerPage}
-            />
-        </div>
-        <div>
-            <SortTable
-                setSortRating={setSortRating}
-                setSortTitle={setSortTitle}
-                setSortOrder={setSortOrder}
-            />
-        </div>
+        <PageOptions setMoviePerPage={setMoviePerPage} currentMoviePerPage={moviePerPage} 
+                        setSortRating={setSortRating} setSortTitle={setSortTitle} setSortOrder={setSortOrder} />
         
-        <table>
-            <tbody>
-                <tr>
-                    <th>Title</th>
-                    <th>Year</th> 
-                    <th>Director</th> 
-                    <th>Rating</th> 
-                    <th>Stars</th> 
-                    <th>Genres</th> 
-                </tr>
-            </tbody>
-            {movieBanners}
-        </table>
+        <MovieTable movieBanners={movieBanners}/>
         <div>
             <Pagination
                 totalMovies={totalMovies}

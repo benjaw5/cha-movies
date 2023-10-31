@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 async function getSingleActor(id) {
-    let apiLink = "http://localhost:8000/cha-movies/api/single-star?id="+id;
+    let apiLink = "/cha-movies/api/single-star?id="+id;
     try {
         const response = await fetch(apiLink, {
             method: "GET",

@@ -13,7 +13,7 @@ function MoviePage() {
     const {movieId} = useParams();
 
     useEffect(() => {
-        getSingleMovie("http://localhost:8000/cha-movies/api/single-movie?id="+movieId).then(data => {
+        getSingleMovie("/cha-movies/api/single-movie?id="+movieId).then(data => {
             setMovieObject(data[0])
         })
     }, [])
@@ -46,16 +46,20 @@ function MoviePage() {
 
 
     return (
-            <MoviePageStyle>
+            <>
             <a href={JSON.parse(window.localStorage.getItem("PrevURL")) || '/cha-movies/ranked'}><h3>{"Previous Page"}</h3></a>
-            <p>{movieObject.movie_title}</p>
-            <p>{movieObject.movie_year}</p>
-            <p>{movieObject.movie_director}</p>
-            <p>{genreList}</p>
-            <p>{actorList}</p>
-            <p>{movieObject.movie_rating}</p>
+            <MoviePageStyle>
+            <p className="movie-title">{movieObject.movie_title}</p>
+            <div className="movie-info">
+            <p className="movie-year">Year: {movieObject.movie_year}</p>
+            <p className="movie-director">Director: {movieObject.movie_director}</p>
+            <p className="movie-rating">Rating: {movieObject.movie_rating}</p>
+            </div>
+            <div className="genre-list">{genreList}</div>
+            <div className="actor-list">{actorList}</div>
             <CartButton title={movieObject.movie_title} action="purchase" displayName="Purchase"/>
             </MoviePageStyle>
+            </>
     )
 }
 

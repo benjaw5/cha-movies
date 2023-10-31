@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 
 async function getAllTitles() {
-    let apiLink = "http://localhost:8000/cha-movies/api/title";
+    let apiLink = "/cha-movies/api/title";
     try {
         const response = await fetch(apiLink, {
             method: "GET"

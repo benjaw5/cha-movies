@@ -11,7 +11,7 @@ function Nmovies({setMoviePerPage, currentMoviePerPage}){
 
     return (
         <div className="dropdown-movies">
-            <h4>Movies Per Page:</h4>
+            <h4>Movies Per Page</h4>
             <select className="form-select" onChange={e => setMoviePerPage(e.target.value)} value={currentMoviePerPage}>
                 {options.map(option => (
                     <option value={option.value}>{option.label}</option>

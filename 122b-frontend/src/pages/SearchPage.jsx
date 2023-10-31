@@ -3,10 +3,9 @@ import { useLocation } from 'react-router-dom';
 import search from '../api/search';
 import MovieBanner from '../components/MovieBanner';
 import Pagination from '../pagination/Pagination';
-import Nmovies from '../pagination/Nmovies.jsx';
-import SortTable from '../sort/SortTable.jsx';
 import sortMovieData from '../sort/sortMovieData';
-
+import MovieTable from '../components/MovieTable';
+import PageOptions from '../pagination/PageOptions';
 
 function SearchPage() {
     const [movieList, setMovieList] = useState([]);
@@ -65,31 +64,10 @@ function SearchPage() {
 
     return (
         <>
-        <div>
-            <Nmovies
-                setMoviePerPage={setMoviePerPage}
-                currentMoviePerPage={moviePerPage}
-            />
-        </div>
-        <div>
-            <SortTable
-                setSortRating={setSortRating}
-                setSortTitle={setSortTitle}
-                setSortOrder={setSortOrder}
-            />
-        </div>
+        <PageOptions setMoviePerPage={setMoviePerPage} currentMoviePerPage={moviePerPage} 
+                        setSortRating={setSortRating} setSortTitle={setSortTitle} setSortOrder={setSortOrder} />
 
-        <table>
-            <tr>
-               <th>Title</th> 
-               <th>Year</th> 
-               <th>Director</th> 
-               <th>Rating</th> 
-               <th>Stars</th> 
-               <th>Genres</th> 
-            </tr>
-            {movieBanners}
-        </table>
+        <MovieTable movieBanners={movieBanners}/>
         <div>
             <Pagination
                 totalMovies={totalMovies}

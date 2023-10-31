@@ -2,7 +2,7 @@
 
 async function confirmSales(sale_id, movie_id) {
     try {
-        const response = await fetch(`http://localhost:8000/cha-movies/api/payment/confirmation`, {
+        const response = await fetch(`/cha-movies/api/payment/confirmation`, {
         method: 'POST',
         body: `sale_id=${sale_id}&movie_id=${movie_id}`,
         headers: {

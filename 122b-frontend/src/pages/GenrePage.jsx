@@ -4,8 +4,8 @@ import getSingleMovie from '../api/singleMovie.js';
 import MovieBanner from '../components/MovieBanner.jsx';
 import Pagination from '../pagination/Pagination.jsx';
 import sortMovieData from '../sort/sortMovieData.js';
-import Nmovies from '../pagination/Nmovies.jsx';
-import SortTable from '../sort/SortTable.jsx';
+import MovieTable from '../components/MovieTable.jsx';
+import PageOptions from '../pagination/PageOptions.jsx';
 
 function GenrePage() {
     const [movieList, setMovieList] = useState([]);
@@ -24,7 +24,7 @@ function GenrePage() {
     const [sortOrder, setSortOrder] = useState(JSON.parse(window.localStorage.getItem("SortOrder")) || "title")
 
     useEffect(() => {
-        getSingleMovie("http://localhost:8000/cha-movies/api/single-genre?id="+genreId).then(data => {
+        getSingleMovie("/cha-movies/api/single-genre?id="+genreId).then(data => {
             data = sortMovieData(data, sortOrder, sortTitle, sortRating);
             setTotalMovies(data.length)
 
@@ -50,30 +50,9 @@ function GenrePage() {
 
     return (
         <>
-        <div>
-            <Nmovies
-                setMoviePerPage={setMoviePerPage}
-                currentMoviePerPage={moviePerPage}
-            />
-        </div>
-        <div>
-            <SortTable
-                setSortRating={setSortRating}
-                setSortTitle={setSortTitle}
-                setSortOrder={setSortOrder}
-            />
-        </div>
-        <table>
-            <tr>
-               <th>Title</th> 
-               <th>Year</th> 
-               <th>Director</th> 
-               <th>Rating</th> 
-               <th>Stars</th> 
-               <th>Genres</th> 
-            </tr>
-            {movieBanners}
-        </table>
+        <PageOptions setMoviePerPage={setMoviePerPage} currentMoviePerPage={moviePerPage} 
+                        setSortRating={setSortRating} setSortTitle={setSortTitle} setSortOrder={setSortOrder} />
+        <MovieTable movieBanners={movieBanners}/>
         <div>
             <Pagination
                 totalMovies={totalMovies}

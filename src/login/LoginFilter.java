@@ -31,7 +31,7 @@ public class LoginFilter implements Filter {
 
         // Redirect to login page if the "user" attribute doesn't exist in session
         if (session.getAttribute("user") == null) {
-            httpResponse.sendRedirect("/cha-movies/login");
+            httpResponse.sendRedirect("/cs122b-fall22-project1-star-example/login");
         } else {
             chain.doFilter(request, response);
         }
@@ -42,13 +42,14 @@ public class LoginFilter implements Filter {
     }
 
     public void init(FilterConfig fConfig) {
-        allowedURIs.add("login");
-        allowedURIs.add("/cha-movies/assets/index-94ab92f4.js");
-        allowedURIs.add("/cha-movies/vite.svg");
-        allowedURIs.add("/cha-movies/api/login");
-        allowedURIs.add("/cha-movies/api/signup");
-        allowedURIs.add("/cha-movies/api/title");
-        allowedURIs.add("/cha-movies/api/genre");
+        allowedURIs.add("");
+//        allowedURIs.add("login");
+//        allowedURIs.add("/cha-movies/assets/index-94ab92f4.js");
+//        allowedURIs.add("/cha-movies/vite.svg");
+//        allowedURIs.add("/cha-movies/api/login");
+//        allowedURIs.add("/cha-movies/api/signup");
+//        allowedURIs.add("/cha-movies/api/title");
+//        allowedURIs.add("/cha-movies/api/genre");
 
     }
 

@@ -35,9 +35,11 @@ function HomePage() {
 
     return (
         <Home>
+            <br/>
             <Selections>
                 {titleLinks}
             </Selections>
+            <br/>
             <Selections>
                 {genreLinks}
             </Selections>

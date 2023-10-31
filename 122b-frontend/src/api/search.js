@@ -1,7 +1,7 @@
 
 async function search(title, director, stars, year) {
     try {
-        const response = await fetch(`http://localhost:8000/cha-movies/api/search?title=${title}&director=${director}&stars=${stars}&year=${year}`, {
+        const response = await fetch(`/cha-movies/api/search?title=${title}&director=${director}&stars=${stars}&year=${year}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

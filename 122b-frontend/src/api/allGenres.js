@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 
 async function getAllGenres() {
-    let apiLink = "http://localhost:8000/cha-movies/api/genre";
+    let apiLink = "/cha-movies/api/genre";
     try {
         const response = await fetch(apiLink, {
             method: "GET"

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 async function getTopMovies() {
-    const apiLink = "http://localhost:8000/cha-movies/api/movies";
+    const apiLink = "/cha-movies/api/movies";
 
     try {
         const response = await fetch(apiLink, {

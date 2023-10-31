@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Selections = styled.div`
     width: 70%;
     display: flex;
-    gap: 5px;
+    gap: 10px;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
