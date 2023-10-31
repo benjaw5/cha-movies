@@ -70,8 +70,10 @@ public class SingleGenreServlet extends HttpServlet {
 
             // Generate a SQL query
             String query = "SELECT m.id, m.title, m.director, m.year, r.rating, \n" +
-                    "substring_index(group_concat(DISTINCT CONCAT(s.id, ':', s.name) order by num_movies.num_movies desc, s.name), ',', 3) AS stars,\n" +
-                    "group_concat(distinct CONCAT(gim.genreId, ':', g.name) order by g.name) genres\n" +
+                    "substring_index(group_concat(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY (\n" +
+                    " SELECT count(stars.movieId) FROM (select stars_in_movies.starId id, stars_in_movies.movieId movieId from stars_in_movies where stars_in_movies.starId= s.id) stars GROUP BY stars.id\n" +
+                    ") DESC, s.name), ',', 3) AS stars,\n" +
+                    "group_concat(DISTINCT CONCAT(gim.genreId, ':', g.name) order by g.name) genres\n" +
                     "FROM (SELECT movieId FROM genres_in_movies WHERE genreId = ?) gm \n" +
                     "JOIN movies m ON m.id = gm.movieId\n" +
                     "JOIN ratings r ON m.id = r.movieId\n" +
@@ -79,12 +81,7 @@ public class SingleGenreServlet extends HttpServlet {
                     "JOIN stars_in_movies sm ON m.id = sm.movieId\n" +
                     "JOIN stars s ON s.id = sm.starId\n" +
                     "JOIN genres g ON gim.genreId = g.id\n" +
-                    "JOIN (select s.id as id, s.name as name, count(distinct m.id) as num_movies \n" +
-                    "    from stars s \n" +
-                    "    join stars_in_movies sm on s.id = sm.starId \n" +
-                    "    join movies m on sm.movieId = m.id \n" +
-                    "    group by s.id, s.name) num_movies on num_movies.id = s.id \n" +
-                    "GROUP BY m.id, m.title, m.director, m.year, r.rating\n" +
+                    "GROUP BY m.id, m.title\n" +
                     "order by r.rating DESC;";
 
 
