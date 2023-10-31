@@ -75,4 +75,15 @@ CREATE TABLE IF NOT EXISTS ratings(
     FOREIGN KEY(movieId) REFERENCES movies(id)
 );
 
+CREATE UNIQUE INDEX index_movies ON  movies ( id, title, year, director);
+
+
+CREATE UNIQUE INDEX index_stars ON  stars ( id, name, birthYear);
+
+
+CREATE UNIQUE INDEX index_genres ON  genres ( id, name);
+
+
+CREATE UNIQUE INDEX index_ratings ON  ratings ( Movieid, rating, numVotes);
+
 
