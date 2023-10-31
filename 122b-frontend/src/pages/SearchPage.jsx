@@ -6,6 +6,9 @@ import Pagination from '../pagination/Pagination';
 import sortMovieData from '../sort/sortMovieData';
 import MovieTable from '../components/MovieTable';
 import PageOptions from '../pagination/PageOptions';
+import { PageOptionStyle } from "../styles/Other.style";
+import Nmovies from '../pagination/Nmovies.jsx';
+import SortTable from '../sort/SortTable.jsx';
 
 function SearchPage() {
     const [movieList, setMovieList] = useState([]);
@@ -64,8 +67,21 @@ function SearchPage() {
 
     return (
         <>
-        <PageOptions setMoviePerPage={setMoviePerPage} currentMoviePerPage={moviePerPage} 
-                        setSortRating={setSortRating} setSortTitle={setSortTitle} setSortOrder={setSortOrder} />
+                <PageOptionStyle>
+            <div>
+                <Nmovies
+                    setMoviePerPage={setMoviePerPage}
+                    currentMoviePerPage={moviePerPage}
+                />
+            </div>
+            <div>
+                <SortTable
+                    setSortRating={setSortRating}
+                    setSortTitle={setSortTitle}
+                    setSortOrder={setSortOrder}
+                />
+            </div>
+        </PageOptionStyle>
 
         <MovieTable movieBanners={movieBanners}/>
         <div>

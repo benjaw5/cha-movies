@@ -43,7 +43,7 @@ public class LoginFilter implements Filter {
     public void init(FilterConfig fConfig) {
 
         allowedURIs.add("login");
-        allowedURIs.add("/cha-movies/assets/index-acf8fb27.js");
+        allowedURIs.add("/cha-movies/assets/index-6976338d.js");
         allowedURIs.add("/cha-movies/vite.svg");
         allowedURIs.add("/cha-movies/api/login");
         allowedURIs.add("/cha-movies/api/signup");

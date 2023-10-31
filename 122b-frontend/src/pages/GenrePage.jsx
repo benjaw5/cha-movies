@@ -6,6 +6,9 @@ import Pagination from '../pagination/Pagination.jsx';
 import sortMovieData from '../sort/sortMovieData.js';
 import MovieTable from '../components/MovieTable.jsx';
 import PageOptions from '../pagination/PageOptions.jsx';
+import { PageOptionStyle } from "../styles/Other.style";
+import Nmovies from '../pagination/Nmovies.jsx';
+import SortTable from '../sort/SortTable.jsx';
 
 function GenrePage() {
     const [movieList, setMovieList] = useState([]);
@@ -50,8 +53,21 @@ function GenrePage() {
 
     return (
         <>
-        <PageOptions setMoviePerPage={setMoviePerPage} currentMoviePerPage={moviePerPage} 
-                        setSortRating={setSortRating} setSortTitle={setSortTitle} setSortOrder={setSortOrder} />
+            <PageOptionStyle>
+            <div>
+                <Nmovies
+                    setMoviePerPage={setMoviePerPage}
+                    currentMoviePerPage={moviePerPage}
+                />
+            </div>
+            <div>
+                <SortTable
+                    setSortRating={setSortRating}
+                    setSortTitle={setSortTitle}
+                    setSortOrder={setSortOrder}
+                />
+            </div>
+        </PageOptionStyle>
         <MovieTable movieBanners={movieBanners}/>
         <div>
             <Pagination
