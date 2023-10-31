@@ -81,7 +81,7 @@ public class SingleGenreServlet extends HttpServlet {
                     "JOIN stars_in_movies sm ON m.id = sm.movieId\n" +
                     "JOIN stars s ON s.id = sm.starId\n" +
                     "JOIN genres g ON gim.genreId = g.id\n" +
-                    "GROUP BY m.id, m.title\n" +
+                    "GROUP BY m.id, m.title, m.director, m.year, r.rating\n" +
                     "order by r.rating DESC;";
 
 
