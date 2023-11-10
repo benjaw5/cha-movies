@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import sql.SQLQueries;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -69,23 +70,11 @@ public class SingleTitleServlet extends HttpServlet {
 
             String param_title = request.getParameter("title");
 
-            // Generate a SQL query
-            String query = String.format("SELECT m.id, m.title, m.year, m.director, r.rating, \n" +
-                    "group_concat(DISTINCT CONCAT(g.id, ':',g.name)) genres, \n" +
-                    "group_concat(DISTINCT CONCAT(s.id, ':', s.name)) stars FROM\n" +
-                    "(SELECT * FROM movies m WHERE m.title LIKE '%s%%') m\n" +
-                    "JOIN ratings r ON m.id = r.movieId\n" +
-                    "JOIN genres_in_movies gm ON m.id = gm.movieId\n" +
-                    "JOIN genres g ON gm.genreId = g.id\n" +
-                    "JOIN stars_in_movies sm ON m.id = sm.movieId\n" +
-                    "JOIN stars s ON sm.starId = s.id\n" +
-                    "GROUP BY m.id, m.title, m.year, m.director, r.rating;", param_title);
+            PreparedStatement statement = dbCon.prepareStatement(SQLQueries.SINGLE_TITLE_QUERY);
+            statement.setString(1, param_title+"%");
+            System.out.println(statement.toString());
 
-
-            PreparedStatement statement = dbCon.prepareStatement(query);
-            request.getServletContext().log("query：" + query);
-
-            ResultSet resultSet = statement.executeQuery(query);
+            ResultSet resultSet = statement.executeQuery();
             List<Movie> movies = transformResponseToMovies(resultSet);
 
             JsonArray jsonArray = new JsonArray();

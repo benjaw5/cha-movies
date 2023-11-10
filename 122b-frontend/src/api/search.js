@@ -1,7 +1,10 @@
 
 async function search(title, director, stars, year) {
     try {
-        const response = await fetch(`/cha-movies/api/search?title=${title}&director=${director}&stars=${stars}&year=${year}`, {
+
+        let urlPrefix = import.meta.env.VITE_URL_PREFIX 
+        let apiLink = `${urlPrefix}` + `/cha-movies/api/search?title=${title}&director=${director}&stars=${stars}&year=${year}`
+        const response = await fetch(apiLink, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

@@ -28,8 +28,11 @@ function TitlePage() {
     const [sortTitle, setSortTitle] = useState(JSON.parse(window.localStorage.getItem("TitleOrder")) || "ASC")
     const [sortOrder, setSortOrder] = useState(JSON.parse(window.localStorage.getItem("SortOrder")) || "title")
 
+    let urlPrefix = import.meta.env.VITE_URL_PREFIX 
+    let apiLink = `${urlPrefix}` + "/cha-movies/api/single-title?title="+title
+
     useEffect(() => {
-        getSingleMovie("/cha-movies/api/single-title?title="+title).then(data => {
+        getSingleMovie(apiLink).then(data => {
             data = sortMovieData(data, sortOrder, sortTitle, sortRating);
 
             setTotalMovies(data.length)

@@ -2,7 +2,9 @@
 
 async function confirmSales(sale_id, movie_id) {
     try {
-        const response = await fetch(`/cha-movies/api/payment/confirmation`, {
+        let urlPrefix = import.meta.env.VITE_URL_PREFIX 
+        let apiLink = `${urlPrefix}` + `/cha-movies/api/payment/confirmation`
+        const response = await fetch(apiLink, {
         method: 'POST',
         body: `sale_id=${sale_id}&movie_id=${movie_id}`,
         headers: {

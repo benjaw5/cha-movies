@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 
 
 async function getAllTitles() {
-    let apiLink = "/cha-movies/api/title";
+    let urlPrefix = import.meta.env.VITE_URL_PREFIX 
+    let apiLink = `${urlPrefix}` + "/cha-movies/api/title";
     try {
         const response = await fetch(apiLink, {
             method: "GET"

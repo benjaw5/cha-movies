@@ -8,7 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import sql.SQLQueries;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -58,21 +58,8 @@ public class SingleMovieServlet extends HttpServlet {
 
             // Construct a query with parameter represented by "?"
 
-            String query = "SELECT m.id, m.title, m.year, m.director, r.rating, group_concat(DISTINCT CONCAT(g.id, ':',g.name)) genres, " +
-                    "group_concat(DISTINCT CONCAT(s.id, ':', s.name)) stars FROM\n" +
-                    "(SELECT * FROM movies m WHERE id = ?) m\n" +
-                    "JOIN ratings r ON m.id = r.movieId\n" +
-                    "JOIN genres_in_movies gm ON m.id = gm.movieId\n" +
-                    "JOIN genres g ON gm.genreId = g.id\n" +
-                    "JOIN stars_in_movies sm ON m.id = sm.movieId\n" +
-                    "JOIN stars s ON sm.starId = s.id\n" +
-                    "GROUP BY m.id, m.title, m.year, m.director, r.rating;";
-
             // Declare our statement
-            PreparedStatement statement = conn.prepareStatement(query);
-
-            // Set the parameter represented by "?" in the query to the id we get from url,
-            // num 1 indicates the first "?" in the query
+            PreparedStatement statement = conn.prepareStatement(SQLQueries.SINGLE_MOVIE_QUERY);
 
             statement.setString(1, param_id);
 

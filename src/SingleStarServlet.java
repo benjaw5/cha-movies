@@ -8,6 +8,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import sql.SQLQueries;
+
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -50,21 +52,8 @@ public class SingleStarServlet extends HttpServlet {
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
-            // Get a connection from dataSource
 
-            // Construct a query with parameter represented by "?"
-
-            String query = "SELECT s.id, s.name, s.birthYear, group_concat(DISTINCT CONCAT(m.id, \";\", m.title)) movies FROM\n" +
-                    "(SELECT * from stars as s WHERE s.id = ?) s\n" +
-                    "JOIN stars_in_movies sm ON s.id = sm.starId\n" +
-                    "JOIN movies m ON sm.movieId = m.id\n" +
-                    "GROUP BY s.id;";
-
-            // Declare our statement
-            PreparedStatement statement = conn.prepareStatement(query);
-
-            // Set the parameter represented by "?" in the query to the id we get from url,
-            // num 1 indicates the first "?" in the query
+            PreparedStatement statement = conn.prepareStatement(SQLQueries.SINGLE_STAR_QUERY);
 
             statement.setString(1, param_id);
 

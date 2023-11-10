@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 
 
 async function getAllGenres() {
-    let apiLink = "/cha-movies/api/genre";
+    let urlPrefix = import.meta.env.VITE_URL_PREFIX 
+    let apiLink = `${urlPrefix}` + "/cha-movies/api/genre";
     try {
         const response = await fetch(apiLink, {
             method: "GET"

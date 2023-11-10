@@ -58,7 +58,7 @@ public class GenreServlet extends HttpServlet {
 
             // Iterate through each row of rs
             while (rs.next()) {
-                String genre = rs.getString("genre");
+                        String genre = rs.getString("genre");
                 long id = rs.getLong("id");
 
                 // Create a JsonObject based on the data we retrieve from rs

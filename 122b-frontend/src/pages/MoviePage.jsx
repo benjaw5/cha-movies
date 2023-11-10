@@ -12,8 +12,11 @@ function MoviePage() {
     const [genreList, setGenreList] = useState([]);
     const {movieId} = useParams();
 
+    let urlPrefix = import.meta.env.VITE_URL_PREFIX 
+    let apiLink = `${urlPrefix}` + "/cha-movies/api/single-movie?id="+movieId
+
     useEffect(() => {
-        getSingleMovie("/cha-movies/api/single-movie?id="+movieId).then(data => {
+        getSingleMovie(apiLink).then(data => {
             setMovieObject(data[0])
         })
     }, [])

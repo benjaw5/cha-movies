@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 
 async function getTopMovies() {
-    const apiLink = "/cha-movies/api/movies";
+    let urlPrefix = import.meta.env.VITE_URL_PREFIX 
+    let apiLink = `${urlPrefix}` + "/cha-movies/api/movies"
 
     try {
         const response = await fetch(apiLink, {

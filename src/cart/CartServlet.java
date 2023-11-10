@@ -92,7 +92,6 @@ public class CartServlet extends HttpServlet {
             responseJsonObject.addProperty(i.getKey(), String.valueOf(i.getValue()));
         }
 
-        System.out.println(responseJsonObject.toString());
         response.getWriter().write(responseJsonObject.toString());
     }
 }

@@ -8,14 +8,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import sql.SQLQueries;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 
 // Declaring a WebServlet called StarsServlet, which maps to url "/api/stars"
@@ -48,24 +48,10 @@ public class MovieRatedServlet extends HttpServlet {
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
 
-            // Declare our statement
-            Statement statement = conn.createStatement();
-
-//            String query = "SELECT * from stars";
-            String query = "SELECT top_movies.id, title, director, year, rating, \n" +
-                    "substring_index(group_concat(DISTINCT CONCAT(s.id, ':', s.name)), ',', 3) AS stars, \n" +
-                    "substring_index(group_concat(DISTINCT CONCAT(g.id, ':',g.name)), ',', 3) AS genres FROM \n" +
-                    "(SELECT * FROM movies m JOIN ratings r ON m.id = r.movieId order by rating desc limit 20) AS top_movies\n" +
-                    "JOIN genres_in_movies gm ON top_movies.id = gm.movieId\n" +
-                    "JOIN genres g ON gm.genreId = g.id\n" +
-                    "JOIN stars_in_movies sm ON top_movies.id = sm.movieId\n" +
-                    "JOIN stars s ON s.id = sm.starId\n" +
-                    "GROUP BY top_movies.id, top_movies.rating\n" +
-                    "order by top_movies.rating DESC;";
-
+            PreparedStatement queryRankedMovies = conn.prepareStatement(SQLQueries.TOP_MOVIES_QUERY);
 
             // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = queryRankedMovies.executeQuery();
 
             JsonArray jsonArray = new JsonArray();
 
@@ -92,7 +78,6 @@ public class MovieRatedServlet extends HttpServlet {
                 jsonArray.add(jsonObject);
             }
             rs.close();
-            statement.close();
 
             // Log to localhost log
             request.getServletContext().log("getting " + jsonArray.size() + " results");

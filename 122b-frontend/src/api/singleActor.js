@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 
 async function getSingleActor(id) {
-    let apiLink = "/cha-movies/api/single-star?id="+id;
+    let urlPrefix = import.meta.env.VITE_URL_PREFIX 
+    let apiLink = `${urlPrefix}` + "/cha-movies/api/single-star?id="+id;
     try {
         const response = await fetch(apiLink, {
             method: "GET",

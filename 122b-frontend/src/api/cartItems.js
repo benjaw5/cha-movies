@@ -1,7 +1,9 @@
 
 async function getCartItems() {
     try {
-        const response = await fetch(`/cha-movies/api/cart`, {
+        let urlPrefix = import.meta.env.VITE_URL_PREFIX 
+        let apiLink = `${urlPrefix}` + `/cha-movies/api/cart`
+        const response = await fetch(apiLink, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

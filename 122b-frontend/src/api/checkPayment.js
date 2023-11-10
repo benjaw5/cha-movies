@@ -2,7 +2,9 @@
 
 async function checkPayment(credit_num, first_name, last_name, expiration_date) {
     try {
-        const response = await fetch(`/cha-movies/api/payment?credit_num=${credit_num}&first_name=${first_name}&last_name=${last_name}&expiration_date=${expiration_date}`, {
+        let urlPrefix = import.meta.env.VITE_URL_PREFIX 
+        let apiLink = `${urlPrefix}` + `/cha-movies/api/payment?credit_num=${credit_num}&first_name=${first_name}&last_name=${last_name}&expiration_date=${expiration_date}`
+        const response = await fetch(apiLink, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

@@ -11,12 +11,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import sql.SQLQueries;
+
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 @WebServlet(name = "SingleGenreServlet", urlPatterns = "/api/single-genre")
@@ -68,30 +71,8 @@ public class SingleGenreServlet extends HttpServlet {
 
             String param_id = request.getParameter("id");
 
-            // Generate a SQL query
-            String query = "SELECT m.id, m.title, m.director, m.year, r.rating, \n" +
-                    "substring_index(group_concat(DISTINCT CONCAT(s.id, ':', s.name) ORDER BY (\n" +
-                    " SELECT count(stars.movieId) FROM (select stars_in_movies.starId id, stars_in_movies.movieId movieId from stars_in_movies where stars_in_movies.starId= s.id) stars GROUP BY stars.id\n" +
-                    ") DESC, s.name), ',', 3) AS stars,\n" +
-                    "group_concat(DISTINCT CONCAT(gim.genreId, ':', g.name) order by g.name) genres\n" +
-                    "FROM (SELECT movieId FROM genres_in_movies WHERE genreId = ?) gm \n" +
-                    "JOIN movies m ON m.id = gm.movieId\n" +
-                    "JOIN ratings r ON m.id = r.movieId\n" +
-                    "JOIN genres_in_movies gim ON gim.movieId = gm.movieId\n" +
-                    "JOIN stars_in_movies sm ON m.id = sm.movieId\n" +
-                    "JOIN stars s ON s.id = sm.starId\n" +
-                    "JOIN genres g ON gim.genreId = g.id\n" +
-                    "GROUP BY m.id, m.title, m.director, m.year, r.rating\n" +
-                    "order by r.rating DESC;";
-
-
-
-
-            PreparedStatement statement = dbCon.prepareStatement(query);
+            PreparedStatement statement = dbCon.prepareStatement(SQLQueries.SINGLE_GENRE_QUERY);
             statement.setString(1, param_id);
-
-
-            request.getServletContext().log("query：" + query);
 
             ResultSet resultSet = statement.executeQuery();
             List<Movie> movies = transformResponseToMovies(resultSet);
@@ -102,8 +83,6 @@ public class SingleGenreServlet extends HttpServlet {
                 jsonArray.add(m.movieToJson());
             }
 
-
-            // Close all structures
             resultSet.close();
             statement.close();
             dbCon.close();
@@ -111,9 +90,7 @@ public class SingleGenreServlet extends HttpServlet {
             // Log to localhost log
             request.getServletContext().log("returning " + jsonArray.size() + " movies");
 
-            // Write JSON string to output
             out.write(jsonArray.toString());
-            // Set response status to 200 (OK)
             response.setStatus(200);
 
 
