@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react'
 import { LoginStyle } from '../styles/Other.style';
 import React from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
+import LoginForm from '../components/LoginForm';
 
 function LoginPage() {
     const [email, setEmail] = useState();

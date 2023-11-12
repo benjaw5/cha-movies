@@ -12,6 +12,7 @@ import java.util.ArrayList;
 @WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
 public class LoginFilter implements Filter {
     private final ArrayList<String> allowedURIs = new ArrayList<>();
+    private final ArrayList<String> adminRequiredURIs = new ArrayList<>();
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -20,6 +21,15 @@ public class LoginFilter implements Filter {
 
         HttpSession session = httpRequest.getSession();
 
+        if (doesUrlRequireAdmin(httpRequest.getRequestURI())) {
+            if (session.getAttribute("admin") == null) {
+                httpResponse.sendRedirect("/cha-movies/elogin");
+            }
+            else {
+                chain.doFilter(request, response);
+            }
+            return;
+        }
 
         // Check if this URL is allowed to access without logging in
         if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
@@ -29,27 +39,30 @@ public class LoginFilter implements Filter {
         }
 
         // Redirect to login page if the "user" attribute doesn't exist in session
+
         if (session.getAttribute("user") == null) {
             httpResponse.sendRedirect("/cha-movies/login");
         } else {
             chain.doFilter(request, response);
         }
     }
-
+    private boolean doesUrlRequireAdmin(String requestURI) {
+        return adminRequiredURIs.stream().anyMatch(requestURI.toLowerCase()::endsWith);
+    }
     private boolean isUrlAllowedWithoutLogin(String requestURI) {
         return allowedURIs.stream().anyMatch(requestURI.toLowerCase()::endsWith);
     }
 
     public void init(FilterConfig fConfig) {
-        allowedURIs.add("");
-//
-//        allowedURIs.add("login");
-//        allowedURIs.add("/cha-movies/assets/index-fda626b5.js");
-//        allowedURIs.add("/cha-movies/vite.svg");
-//        allowedURIs.add("/cha-movies/api/login");
-//        allowedURIs.add("/cha-movies/api/signup");
-//        allowedURIs.add("/cha-movies/api/title");
-//        allowedURIs.add("/cha-movies/api/genre");
+        adminRequiredURIs.add("/cha-movies/_dashboard");
+
+        allowedURIs.add("login");
+        allowedURIs.add("/cha-movies/assets/index-564f698a.js");
+        allowedURIs.add("/cha-movies/vite.svg");
+        allowedURIs.add("/cha-movies/api/login");
+        allowedURIs.add("/cha-movies/api/signup");
+        allowedURIs.add("/cha-movies/api/title");
+        allowedURIs.add("/cha-movies/api/genre");
 
     }
 
