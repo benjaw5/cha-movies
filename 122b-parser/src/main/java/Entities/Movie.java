@@ -1,19 +1,31 @@
 package Entities;
 
+import java.util.ArrayList;
+
 public class Movie {
     private String id;
     private String title;
     private String year;
     private String director;
-
-    private String genre;
-
-    public Movie(String id, String title, String year, String director, String genre) {
+    private ArrayList<String> genres;
+    public Movie(String id, String title, String year, String director) {
         this.id = id;
         this.title = title;
         this.year = year;
         this.director = director;
-        this.genre = genre;
+        this.genres = new ArrayList<>();
+    }
+
+    public void addGenre(String genre) {
+        this.genres.add(genre);
+    }
+
+    public int genreListSize() {
+        return this.genres.size();
+    }
+
+    public ArrayList<String> getGenres() {
+        return this.genres;
     }
 
     public String getId() {
@@ -52,7 +64,8 @@ public class Movie {
         return "ID: " + getId() + ", " +
                 "Title: " + getTitle() + ", " +
                 "Year: " + getYear() + ", " +
-                "Director: " + getDirector() + ".";
+                "Director: " + getDirector() + "." +
+                "Genres: ";
     }
 
 }

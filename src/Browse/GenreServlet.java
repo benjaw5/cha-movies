@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -44,15 +45,11 @@ public class GenreServlet extends HttpServlet {
             Connection dbCon = dataSource.getConnection();
 
 
-            Statement statement = dbCon.createStatement();
-
-            String query = String.format("SELECT DISTINCT id, name genre from genres ORDER BY name;");
-
+            PreparedStatement statement = dbCon.prepareStatement("SELECT DISTINCT id, name genre from genres ORDER BY name;");
 
             // Log to localhost log
-            request.getServletContext().log("query：" + query);
 
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = statement.executeQuery();
 
             JsonArray jsonArray = new JsonArray();
 

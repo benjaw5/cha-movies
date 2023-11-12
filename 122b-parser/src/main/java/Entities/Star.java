@@ -8,9 +8,11 @@ public class Star {
     private String birthYear;
     private ArrayList<String> movies;
 
-    public Star(String name, String birthYear) {
+    public Star(String id, String name, String birthYear) {
+        this.id = id;
         this.name = name;
         this.birthYear = birthYear;
+        this.movies = new ArrayList<>();
     }
 
     public ArrayList<String> getMovies() {return movies;}
@@ -40,4 +42,5 @@ public class Star {
     public void setBirthYear(String birthYear) {
         this.birthYear = birthYear;
     }
+
 }

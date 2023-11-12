@@ -6,9 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import Entities.Movie;
 import Entities.Star;
@@ -17,12 +15,12 @@ import com.zaxxer.hikari.HikariDataSource;
 
 public class Database {
 
-    private Set<String> genreSet;
+    private HashMap<String, Integer> genreMap;
     private Statement statement;
 
     private HikariDataSource dataSource;
     private ResultSet resultSet;
-    private int actorId = 0;
+
 
     public Database() throws Exception {
 
@@ -34,11 +32,45 @@ public class Database {
 
         dataSource = new HikariDataSource(config);
 
-        genreSet = new HashSet<>();
+        genreMap = new HashMap<>();
 
         try (Connection conn = dataSource.getConnection()) {
             statement = conn.createStatement();
 
+
+            String query = "SELECT DISTINCT * from genres;";
+            resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                genreMap.put(resultSet.getString("name"), resultSet.getInt("id"));
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public int getLastMovieID() throws Exception {
+        int movieId = 0;
+        try (Connection conn = dataSource.getConnection()) {
+            statement = conn.createStatement();
+            String query = "select max(id) id from movies;";
+            resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                String id = resultSet.getString("id");
+                movieId = Integer.parseInt(id.replaceAll("[^0-9]", ""));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return movieId;
+    }
+
+    public int getLastActorID() throws Exception {
+        int actorId = 0;
+        try (Connection conn = dataSource.getConnection()) {
+            statement = conn.createStatement();
             String query = "select max(id) id from stars;";
             resultSet = statement.executeQuery(query);
 
@@ -46,51 +78,177 @@ public class Database {
                 String id = resultSet.getString("id");
                 actorId = Integer.parseInt(id.replaceAll("[^0-9]", ""));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return actorId;
+    }
 
-            query = "SELECT DISTINCT name genre from genres;";
+    public int getLastGenreId() throws Exception {
+        int genreId = 0;
+        try (Connection conn = dataSource.getConnection()) {
+            statement = conn.createStatement();
+            String query = "select max(id) id from genres";
             resultSet = statement.executeQuery(query);
 
-            while (resultSet.next()) {
-                genreSet.add(resultSet.getString("name"));
+            if (resultSet.next()) {
+                String id = resultSet.getString("id");
+                genreId = Integer.parseInt(id);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return genreId;
+    }
 
+    public void batchInsertActorMovies(Map<String, Star> starMap) throws Exception {
+        int starsInMoviesInsertedCount = 0;
+        try (Connection conn = dataSource.getConnection()) {
+            conn.setAutoCommit(false);
+
+            String starMovieQuery = "insert into stars_in_movies (starId, movieId) values(?, ?)";
+            PreparedStatement starMovieStatement = conn.prepareStatement(starMovieQuery);
+
+            int starMapSize = starMap.size();
+            int i = 0;
+            for (Star s : starMap.values()) {
+                i++;
+
+                String actorId = s.getId();
+                ArrayList<String> movies = s.getMovies();
+                for (int j = 0; j < movies.size(); j++) {
+                    starMovieStatement.setString(1, actorId);
+                    starMovieStatement.setString(2, movies.get(j));
+                    starsInMoviesInsertedCount++;
+                    starMovieStatement.addBatch();
+
+                    if (i != 0 && (i % 100 == 0 || i == starMapSize-1)) {
+                        try {
+                            starMovieStatement.executeBatch();
+                            conn.commit();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("Inserted " + starsInMoviesInsertedCount + " stars_in_movies");
     }
-
-    public void batchInsertMovies(List<Movie> movies) throws Exception {
+    public void batchInsertActors(Map<String, Star> starMap) throws Exception {
+        int starsInsertedCount = 0;
         try (Connection conn = dataSource.getConnection()) {
             conn.setAutoCommit(false);
-            String query = "insert into movies2 (id, title, year, director) values(?, ?, ?, ?);";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            String starQuery = "insert into stars (id, name, birthYear) values(?, ?, ?)";
+            PreparedStatement starStatement = conn.prepareStatement(starQuery);
 
-            int movieSize = movies.size();
-            for (int i = 0; i < movieSize; i++) {
-                Movie m = movies.get(i);
-                preparedStatement.setString(1, m.getId());
-                preparedStatement.setString(2, m.getTitle());
-                preparedStatement.setString(3, m.getYear());
-                preparedStatement.setString(4, m.getDirector());
-                preparedStatement.addBatch();
 
-                if (i != 0 && (i % 100 == 0 || i == movieSize-1)) {
+            int starMapSize = starMap.size();
+            int i = 0;
+            for (Star s : starMap.values()) {
+                starStatement.setString(1, s.getId());
+                starStatement.setString(2, s.getName());
+                starStatement.setString(3, s.getBirthYear());
+                starStatement.addBatch();
+                starsInsertedCount++;
+                i++;
+
+
+                if (i != 0 && (i % 100 == 0 || i == starMapSize-1)) {
                     try {
-                        preparedStatement.executeBatch();
+                        starStatement.executeBatch();
                         conn.commit();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }
             }
-            preparedStatement.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("Inserted " + starsInsertedCount + " stars");
+    }
+    public void batchInsertMovies(List<Movie> movies) throws Exception {
+        int moviesInsertedCount = 0;
+        int genresInsertedCount = 0;
+        int genresInMoviesCount = 0;
+
+        try (Connection conn = dataSource.getConnection()) {
+            conn.setAutoCommit(false);
+
+            String movieQuery = "insert into movies (id, title, year, director) values(?, ?, ?, ?);";
+            PreparedStatement movieStatement = conn.prepareStatement(movieQuery);
+
+            int genreId = getLastGenreId() + 1;
+            String genreQuery = "insert into genres (id, name) values(?, ?)";
+            PreparedStatement genreStatement = conn.prepareStatement(genreQuery);
+
+            String genresInMoviesQuery = "insert into genres_in_movies (genreId, movieId) values (?, ?)";
+            PreparedStatement genresInMoviesStatement = conn.prepareStatement(genresInMoviesQuery);
+
+            int movieSize = movies.size();
+            for (int i = 0; i < movieSize; i++) {
+                Movie m = movies.get(i);
+                movieStatement.setString(1, m.getId());
+                movieStatement.setString(2, m.getTitle());
+                movieStatement.setInt(3, Integer.parseInt(m.getYear()));
+                movieStatement.setString(4, m.getDirector());
+                moviesInsertedCount++;
+                movieStatement.addBatch();
+
+                ArrayList<String> genres = m.getGenres();
+
+                for (int j = 0; j < genres.size(); j++) {
+                    String genre = genres.get(j).trim();
+
+
+
+                    if (!genreMap.containsKey(genre)) {
+                        genreStatement.setInt(1, genreId);
+                        genreStatement.setString(2, genre);
+                        genreStatement.addBatch();
+                        genresInMoviesStatement.setInt(1, genreId);
+                        genresInMoviesStatement.setString(2, m.getId());
+                        genresInMoviesStatement.addBatch();
+                        genreMap.put(genre, genreId);
+                        genresInMoviesCount++;
+                        genreId++;
+                        genresInsertedCount++;
+                    }
+                    else {
+                        genresInMoviesStatement.setInt(1, genreMap.get(genre));
+                        genresInMoviesStatement.setString(2, m.getId());
+                        genresInMoviesStatement.addBatch();
+                        genresInMoviesCount++;
+                    }
+                }
+
+
+                if (i != 0 && (i % 100 == 0 || i == movieSize-1)) {
+                    try {
+                        movieStatement.executeBatch();
+                        genreStatement.executeBatch();
+                        conn.commit();
+                        genresInMoviesStatement.executeBatch();
+                        conn.commit();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            movieStatement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Inserted " + moviesInsertedCount + " movies");
+        System.out.println("Inserted " + genresInsertedCount + " genres");
+        System.out.println("Inserted " + genresInMoviesCount + " genres_in_movies");
     }
 
-    public void batchInsertActors
 
 }

@@ -59,15 +59,11 @@ public class LoginServlet extends HttpServlet {
             PreparedStatement statement = conn.prepareStatement(query);
 
             statement.setString(1, email);
-            System.out.println(statement);
             ResultSet rs = statement.executeQuery();
-            System.out.println(rs);
             if (!rs.next() == false) {
                 String encryptedPassword = rs.getString("password");
-                System.out.println(strongPasswordEncryptor.checkPassword(password, encryptedPassword));
                 if (strongPasswordEncryptor.checkPassword(password, encryptedPassword)) {
                     HttpSession session = request.getSession();
-
 
                     session.setAttribute("user", new User(email, password));
 

@@ -3,6 +3,7 @@ package Insertions;
 
 import Entity.User;
 import com.google.gson.JsonObject;
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -65,15 +66,14 @@ public class AddStar extends HttpServlet {
             // Get a connection from dataSource and let resource manager close the connection after usage.
             try (Connection conn = dataSource.getConnection()) {
 
+                PreparedStatement statement = conn.prepareStatement("insert into stars (id, name, birthYear)\n" +
+                        "select concat(SUBSTRING(max(id), 1, 2), CAST(SUBSTRING(max(id), 3) AS UNSIGNED) + 1), ?, ?\n" +
+                        "from stars;");
 
-                String query = String.format("insert into stars (id, name, birthYear)\n" +
-                        "select concat(SUBSTRING(max(id), 1, 2), CAST(SUBSTRING(max(id), 3) AS UNSIGNED) + 1), '%s', '%s'\n" +
-                        "from stars;", param_star_name, param_birth_year);
+                statement.setString(1, param_star_name);
+                statement.setInt(2, param_birth_year);
 
-                // Declare our statement
-                System.out.println(query);
-                PreparedStatement statement = conn.prepareStatement(query);
-                int rowsAffected = statement.executeUpdate(query);
+                int rowsAffected = statement.executeUpdate();
 
 
                 if (rowsAffected > 0) {
