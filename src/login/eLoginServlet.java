@@ -1,6 +1,7 @@
 package login;
 
 import Entity.User;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,10 +18,12 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 @WebServlet(name = "eLoginServlet", urlPatterns = "/api/elogin")
 public class eLoginServlet extends HttpServlet {
     private DataSource dataSource;
+    private StrongPasswordEncryptor strongPasswordEncryptor = new StrongPasswordEncryptor();
 
     public void init(ServletConfig config) {
         try {
@@ -31,41 +34,56 @@ public class eLoginServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         JsonObject responseJsonObject = new JsonObject();
         PrintWriter out = response.getWriter();
 
+        try {
+            RecaptchaVerifyUtils.verify(gRecaptchaResponse);
+        } catch (Exception e) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("errorMessage", "reCaptcha not satisfied");
+            out.write(jsonObject.toString());
+            response.setStatus(500);
+            return;
+        }
+
         try (Connection conn = dataSource.getConnection()) {
 
-            String query = "select * from employees where email = ? and password = ?;";
+            String query = "SELECT * FROM employees WHERE email = ?";
             PreparedStatement statement = conn.prepareStatement(query);
 
             statement.setString(1, email);
-            statement.setString(2, password);
 
             ResultSet rs = statement.executeQuery();
 
             if (!rs.next() == false) {
-                // Login success:
-                // set this user into the session
-                HttpSession session = request.getSession();
+                String encryptedPassword = rs.getString("password");
+
+                if (strongPasswordEncryptor.checkPassword(password, encryptedPassword)) {
+                    HttpSession session = request.getSession();
 
 
-                session.setAttribute("user", new User(email, password));
+                    session.setAttribute("user", new User(email, password));
 
-                responseJsonObject.addProperty("status", "success");
-                responseJsonObject.addProperty("message", "success");
-                response.sendRedirect("/_dashboard/");
-                response.setStatus(200);
-
+                    responseJsonObject.addProperty("status", "success");
+                    responseJsonObject.addProperty("message", "success");
+                    response.setStatus(200);
+                }
+                else {
+                    responseJsonObject.addProperty("status", "fail");
+                    responseJsonObject.addProperty("errorMessage", "Wrong password information");
+                    request.getServletContext().log("Login failed");
+                    response.setStatus(500);
+                }
             } else {
                 // Login fail
                 responseJsonObject.addProperty("status", "fail");
-
+                responseJsonObject.addProperty("errorMessage", "Wrong email information");
                 request.getServletContext().log("Login failed");
-                response.sendRedirect("/elogin/");
                 response.setStatus(500);
             }
             rs.close();

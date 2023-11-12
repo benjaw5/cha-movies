@@ -13,6 +13,9 @@ import CartPage from './pages/CartPage';
 import { SiteStyle, NavbarStyle } from './styles/Site.style';
 import PaymentPage from './pages/PaymentPage';
 import ConfirmationPage from './pages/ConfirmationPage';
+import DashBoard from './pages/DashBoard';
+import AddMovie from './pages/AddMoviePage';
+import AddStar from './pages/AddStar';
 
 function App() {
     return (
@@ -40,6 +43,9 @@ function App() {
                 <Route path='/cha-movies/movies/:movieId' element = {<MoviePage/>} />
                 <Route path='/cha-movies/actors/:actorId' element = {<ActorPage/>} />
                 <Route path='/cha-movies/login' element = {<LoginPage/>} />
+                <Route path='/cha-movies/_dashboard' element = {<DashBoard/>} />
+                <Route path='/cha-movies/_dashboard/addmovie' element = {<AddMovie/>} />
+                <Route path='/cha-movies/_dashboard/addstar' element = {<AddStar/>} />
             </Routes>
         </BrowserRouter>
 
