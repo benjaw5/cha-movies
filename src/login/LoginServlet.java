@@ -54,15 +54,17 @@ public class LoginServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
 
             String query = "SELECT * FROM customers WHERE email = ?";
+
+
             PreparedStatement statement = conn.prepareStatement(query);
 
             statement.setString(1, email);
-
+            System.out.println(statement);
             ResultSet rs = statement.executeQuery();
-
+            System.out.println(rs);
             if (!rs.next() == false) {
                 String encryptedPassword = rs.getString("password");
-
+                System.out.println(strongPasswordEncryptor.checkPassword(password, encryptedPassword));
                 if (strongPasswordEncryptor.checkPassword(password, encryptedPassword)) {
                     HttpSession session = request.getSession();
 
@@ -92,6 +94,7 @@ public class LoginServlet extends HttpServlet {
         } catch (Exception e) {
 
             // Write error message JSON object to output
+            e.printStackTrace();
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("errorMessage", e.getMessage());
             out.write(jsonObject.toString());

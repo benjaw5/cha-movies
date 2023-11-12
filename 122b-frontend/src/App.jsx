@@ -16,6 +16,7 @@ import ConfirmationPage from './pages/ConfirmationPage';
 import DashBoard from './pages/DashBoard';
 import AddMovie from './pages/AddMoviePage';
 import AddStar from './pages/AddStar';
+import ELoginPage from './pages/eLoginPage';
 
 function App() {
     return (
@@ -46,6 +47,7 @@ function App() {
                 <Route path='/cha-movies/_dashboard' element = {<DashBoard/>} />
                 <Route path='/cha-movies/_dashboard/addmovie' element = {<AddMovie/>} />
                 <Route path='/cha-movies/_dashboard/addstar' element = {<AddStar/>} />
+                <Route path='/cha-movies/elogin' element = {<ELoginPage/>} />
             </Routes>
         </BrowserRouter>
 

@@ -67,7 +67,7 @@ public class eLoginServlet extends HttpServlet {
                     HttpSession session = request.getSession();
 
 
-                    session.setAttribute("user", new User(email, password));
+                    session.setAttribute("admin", new User(email, password));
 
                     responseJsonObject.addProperty("status", "success");
                     responseJsonObject.addProperty("message", "success");

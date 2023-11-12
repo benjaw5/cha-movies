@@ -2,12 +2,11 @@ import {useState, useEffect} from 'react'
 import { LoginStyle } from '../styles/Other.style';
 import React from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
-import LoginForm from '../components/LoginForm';
 
-function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [recaptchaResponse, setRecaptchaResponse] = useState('');
+function ELoginPage() {
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [recaptchaResponse, setRecaptchaResponse] = useState();
     const recaptchaRef = React.createRef();
     
     const recaptcha = <ReCAPTCHA
@@ -28,7 +27,7 @@ function LoginPage() {
     const submitHandler = async e => {
         e.preventDefault();
         let urlPrefix = import.meta.env.VITE_URL_PREFIX 
-        let apiLink = `${urlPrefix}` + '/cha-movies/api/login'
+        let apiLink = `${urlPrefix}` + '/cha-movies/api/elogin'
         recaptchaRef.current.reset();
         try {
             const response = await fetch(apiLink, {
@@ -40,7 +39,7 @@ function LoginPage() {
             })
             
             if (response.status == 200) {
-                window.location.href = "/cha-movies/"
+                window.location.href = "/cha-movies/_dashboard"
             }
             else {
                 let data = await response.json()
@@ -69,4 +68,4 @@ function LoginPage() {
     )
 }
 
-export default LoginPage;
+export default ELoginPage;
