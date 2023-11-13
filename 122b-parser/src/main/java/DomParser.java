@@ -31,46 +31,53 @@ public class DomParser {
         database = new Database();
     }
 
-    private Thread newThread(String path, Function f) {
-        return new Thread(() -> {
-            try {
-                Document dom = parseXmlFile(path);
-                f.apply(dom);
-
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
     public void run() throws Exception {
 
 
         Thread thread1 = new Thread(() -> {
+            Document movieDom;
             try {
-                Document movieDom = parseXmlFile("stanford-movies/mains243.xml");
+                movieDom = parseXmlFile("stanford-movies/mains243.xml");
                 parseMoviesDocument(movieDom);
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                movieDom = null;
+                System.gc();
             }
         });
         Thread thread2 = new Thread(() -> {
+            Document starDom;
             try {
-                Document movieDom = parseXmlFile("stanford-movies/actors63.xml");
-                parseStarsDocument(movieDom);
+                starDom = parseXmlFile("stanford-movies/actors63.xml");
+                parseStarsDocument(starDom);
+                starDom = null;
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                starDom = null;
+                System.gc();
             }
         });
+
         thread1.start();
         thread2.start();
         thread1.join();
         thread2.join();
 
-        Document dom = parseXmlFile("stanford-movies/casts124.xml");
-        parseStarsMovies(dom);
+        System.out.println("Finished parsing mains243.xml and actors63.xml");
+        Document castDom = parseXmlFile("stanford-movies/casts124.xml");
+        parseStarsMovies(castDom);
+        castDom = null;
+        System.gc();
 
+        System.out.println("Finished parsing cast124.xml");
+
+        movieHistory.clear();
         database.batchInsertMovies(movies);
+        movies.clear();
+        System.gc();
+
         database.batchInsertActors(starMap);
         database.batchInsertActorMovies(starMap);
 
@@ -250,10 +257,6 @@ public class DomParser {
         System.out.println(duplicateStars + " stars duplicate");
         System.out.println(notFoundMovies + " movies not found");
         System.out.println(notFoundStars + " stars not found in cast");
-    }
-    private int getIntValue(Element ele, String tagName) {
-        // in production application you would catch the exception
-        return Integer.parseInt(getTextValue(ele, tagName));
     }
 
     public static void main(String[] args) throws Exception {

@@ -21,20 +21,28 @@ public class Database {
     private HikariDataSource dataSource;
     private ResultSet resultSet;
 
+    private Connection conn;
+
 
     public Database() throws Exception {
 
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/moviedb");
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/moviedb?rewriteBatchedStatements=true");
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        config.setUsername("mytestuser");
-        config.setPassword("My6$Password");
+        config.setUsername("root");
+        config.setPassword("newpassword");
 
         dataSource = new HikariDataSource(config);
 
         genreMap = new HashMap<>();
 
-        try (Connection conn = dataSource.getConnection()) {
+        try {
+            this.conn = dataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
             statement = conn.createStatement();
 
 
@@ -52,7 +60,7 @@ public class Database {
     }
     public int getLastMovieID() throws Exception {
         int movieId = 0;
-        try (Connection conn = dataSource.getConnection()) {
+        try {
             statement = conn.createStatement();
             String query = "select max(id) id from movies;";
             resultSet = statement.executeQuery(query);
@@ -69,7 +77,7 @@ public class Database {
 
     public int getLastActorID() throws Exception {
         int actorId = 0;
-        try (Connection conn = dataSource.getConnection()) {
+        try  {
             statement = conn.createStatement();
             String query = "select max(id) id from stars;";
             resultSet = statement.executeQuery(query);
@@ -86,7 +94,7 @@ public class Database {
 
     public int getLastGenreId() throws Exception {
         int genreId = 0;
-        try (Connection conn = dataSource.getConnection()) {
+        try  {
             statement = conn.createStatement();
             String query = "select max(id) id from genres";
             resultSet = statement.executeQuery(query);
@@ -103,7 +111,7 @@ public class Database {
 
     public void batchInsertActorMovies(Map<String, Star> starMap) throws Exception {
         int starsInMoviesInsertedCount = 0;
-        try (Connection conn = dataSource.getConnection()) {
+        try {
             conn.setAutoCommit(false);
 
             String starMovieQuery = "insert into stars_in_movies (starId, movieId) values(?, ?)";
@@ -122,7 +130,7 @@ public class Database {
                     starsInMoviesInsertedCount++;
                     starMovieStatement.addBatch();
 
-                    if (i != 0 && (i % 100 == 0 || i == starMapSize-1)) {
+                    if (i != 0 && (i % 1000 == 0 || i == starMapSize-1)) {
                         try {
                             starMovieStatement.executeBatch();
                             conn.commit();
@@ -140,7 +148,7 @@ public class Database {
     }
     public void batchInsertActors(Map<String, Star> starMap) throws Exception {
         int starsInsertedCount = 0;
-        try (Connection conn = dataSource.getConnection()) {
+        try  {
             conn.setAutoCommit(false);
             String starQuery = "insert into stars (id, name, birthYear) values(?, ?, ?)";
             PreparedStatement starStatement = conn.prepareStatement(starQuery);
@@ -157,7 +165,7 @@ public class Database {
                 i++;
 
 
-                if (i != 0 && (i % 100 == 0 || i == starMapSize-1)) {
+                if (i != 0 && (i % 1000 == 0 || i == starMapSize-1)) {
                     try {
                         starStatement.executeBatch();
                         conn.commit();
@@ -177,7 +185,7 @@ public class Database {
         int genresInsertedCount = 0;
         int genresInMoviesCount = 0;
 
-        try (Connection conn = dataSource.getConnection()) {
+        try {
             conn.setAutoCommit(false);
 
             String movieQuery = "insert into movies (id, title, year, director) values(?, ?, ?, ?);";
@@ -228,7 +236,7 @@ public class Database {
                 }
 
 
-                if (i != 0 && (i % 100 == 0 || i == movieSize-1)) {
+                if (i != 0 && (i % 1000 == 0 || i == movieSize-1)) {
                     try {
                         movieStatement.executeBatch();
                         genreStatement.executeBatch();
