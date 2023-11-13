@@ -16,10 +16,10 @@ function AddMovie() {
         apiAddMovie(title,year,director,stars,dob,genre).then(data => {
 
             if (data.status == "success") {
-                alert("Movie added")
+                alert(data["message"])
             }
             else if (data.status == "in database"){
-                alert("Movie already added")
+                alert(data["message"])
             }
             else {
                 alert("Incorrect information")

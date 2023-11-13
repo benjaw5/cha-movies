@@ -14,7 +14,7 @@ function TableData({table_name}) {
         })
     }, [])
 
-    const metaMap = meta.map(metadata => 
+    const metaMap = meta && meta.map(metadata => 
         <Attributes field = {metadata.field} type = {metadata.type}/>
     )
 

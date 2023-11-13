@@ -12,7 +12,7 @@ function AddStar() {
         apiAddStar(stars, dob).then(data => {
 
             if (data.status == "success") {
-                alert("Star added")
+                alert(data["message"])
             }
             else {
                 alert("Incorrect information")

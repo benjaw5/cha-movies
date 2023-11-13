@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 // Declaring a WebServlet called SingleStarServlet, which maps to url "/api/single-star"
 @WebServlet(name = "AddMovieServlet", urlPatterns = "/api/addmovie")
@@ -69,7 +70,7 @@ public class AddMovie extends HttpServlet {
 
                 // Declare our statement
 //                System.out.println(query);
-                PreparedStatement statement = conn.prepareCall("{call add_movie(?,?,?,?,?,?)}");
+                PreparedStatement statement = conn.prepareStatement("call add_movie(?,?,?,?,?,?)");
 
                 statement.setString(1,param_movie_title);
                 statement.setString(2,param_movie_year);
@@ -79,18 +80,23 @@ public class AddMovie extends HttpServlet {
                 statement.setString(6,param_genre);
 
 //                int rowsAffected = statement.executeUpdate();
-                boolean hasResults = statement.execute();
-                System.out.println(hasResults);
-                if (!hasResults) {
-                    responseJsonObject.addProperty("status", "success");
-                    responseJsonObject.addProperty("message", "success");
-                    response.setStatus(200);
-                } else {
-                    responseJsonObject.addProperty("status", "in database");
-                    responseJsonObject.addProperty("message", "fail");
-                    response.setStatus(500);
+                ResultSet rs = statement.executeQuery();
+//                boolean hasResults = statement.execute();
+//                System.out.println(hasResults);
+                if(rs.next()) {
+                    if (!rs.getString("status").equals("Duplicate")) {
+                        String new_movie_id = rs.getString("new_movie_id");
+                        String new_star_id = rs.getString("new_star_id");
+                        String new_genre_id = rs.getString("new_genre_id");
+                        responseJsonObject.addProperty("status", "success");
+                        responseJsonObject.addProperty("message", "success:" + "movieid:" + new_movie_id + "starid:" + new_star_id + "genreid:" + new_genre_id);
+                        response.setStatus(200);
+                    } else {
+                        responseJsonObject.addProperty("status", "in database");
+                        responseJsonObject.addProperty("message", "Duplicate movie");
+                        response.setStatus(500);
+                    }
                 }
-
                 // Iterate through each row of rs
                 statement.close();
                 out.write(responseJsonObject.toString());

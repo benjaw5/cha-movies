@@ -13,7 +13,7 @@ function DashBoard() {
         })
     }, [])
 
-    const tableMap = tables.map(table => 
+    const tableMap = tables && tables.map(table => 
         <TableData table_name = {table.table_name}/>
     )
 

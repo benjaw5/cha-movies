@@ -51,7 +51,7 @@ public class AddStar extends HttpServlet {
 
 
         // Retrieve parameter movie id from url request.
-        Integer param_birth_year = Integer.valueOf(request.getParameter("birthYear"));
+        String param_birth_year = request.getParameter("birthYear");
         String param_star_name = request.getParameter("name");
 
         JsonObject responseJsonObject = new JsonObject();
@@ -65,22 +65,37 @@ public class AddStar extends HttpServlet {
         else{
             // Get a connection from dataSource and let resource manager close the connection after usage.
             try (Connection conn = dataSource.getConnection()) {
+                if(param_birth_year.isEmpty()){
+                    param_birth_year =null;
+                }
 
                 PreparedStatement statement = conn.prepareStatement("insert into stars (id, name, birthYear)\n" +
                         "select concat(SUBSTRING(max(id), 1, 2), CAST(SUBSTRING(max(id), 3) AS UNSIGNED) + 1), ?, ?\n" +
                         "from stars;");
 
                 statement.setString(1, param_star_name);
-                statement.setInt(2, param_birth_year);
+                statement.setString(2, param_birth_year);
 
                 int rowsAffected = statement.executeUpdate();
 
 
                 if (rowsAffected > 0) {
 
-                    responseJsonObject.addProperty("status", "success");
-                    responseJsonObject.addProperty("message", "success");
-                    response.setStatus(200);
+                    statement = conn.prepareStatement("select max(id) as max_id from stars;");
+                    ResultSet rs = statement.executeQuery();
+
+                    if(rs.next()){
+
+                        responseJsonObject.addProperty("status", "success");
+                        responseJsonObject.addProperty("message", "success:starid:" + rs.getString("max_id"));
+                        response.setStatus(200);
+                    }
+                    else{
+                        System.out.println("fuckthis");
+                        responseJsonObject.addProperty("status", "fail");
+                        responseJsonObject.addProperty("message", "fail");
+                        response.setStatus(500);
+                    }
                 } else {
                     responseJsonObject.addProperty("status", "fail");
                     responseJsonObject.addProperty("message", "fail");
