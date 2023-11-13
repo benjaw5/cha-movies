@@ -5,11 +5,19 @@ import {MovieBannerStyles} from '../styles/Movie.style';
 
 function MovieBanner(movieObject) {
     let movie = movieObject.movieObject;
-    let actorInfo = movie.movie_stars.split(',');
-    const actorList = actorInfo.map(info => {
-        let infoSplit = info.split(':');
-        return <ActorLink id = {infoSplit[0]} name = {infoSplit[1]}/>
-    })
+    let actorList = <></>
+    if (movie.movie_stars != null) {
+        let actorInfo = movie.movie_stars.split(',');
+        actorList = actorInfo.map(info => {
+            if (info != null) {
+                let infoSplit = info.split(':');
+                return <ActorLink id = {infoSplit[0]} name = {infoSplit[1]}/>
+            }
+            let infoSplit = info.split(':');
+            return <></>
+        })
+    }
+
 
     let genreInfo = movie.movie_genres.split(',');
     const genreList = genreInfo.map(info => {

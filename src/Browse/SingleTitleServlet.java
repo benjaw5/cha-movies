@@ -72,7 +72,6 @@ public class SingleTitleServlet extends HttpServlet {
 
             PreparedStatement statement = dbCon.prepareStatement(SQLQueries.SINGLE_TITLE_QUERY);
             statement.setString(1, param_title+"%");
-            System.out.println(statement.toString());
 
             ResultSet resultSet = statement.executeQuery();
             List<Movie> movies = transformResponseToMovies(resultSet);

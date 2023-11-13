@@ -17,7 +17,7 @@ public final class SQLQueries {
     public static final String SINGLE_MOVIE_QUERY = "SELECT m.id, m.title, m.year, m.director, r.rating, group_concat(DISTINCT CONCAT(g.id, ':',g.name)) genres, " +
             "group_concat(DISTINCT CONCAT(s.id, ':', s.name)) stars FROM\n" +
             "(SELECT * FROM movies m WHERE id = ?) m\n" +
-            "JOIN ratings r ON m.id = r.movieId\n" +
+            "LEFT JOIN ratings r ON m.id = r.movieId\n" +
             "JOIN genres_in_movies gm ON m.id = gm.movieId\n" +
             "JOIN genres g ON gm.genreId = g.id\n" +
             "JOIN stars_in_movies sm ON m.id = sm.movieId\n" +

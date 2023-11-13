@@ -8,8 +8,8 @@ import { MoviePageStyle } from '../styles/Movie.style';
 
 function MoviePage() {
     const [movieObject, setMovieObject] = useState([]);
-    const [actorList, setActorList] = useState([]);
-    const [genreList, setGenreList] = useState([]);
+    const [actorList, setActorList] = useState([<></>]);
+    const [genreList, setGenreList] = useState([<></>]);
     const {movieId} = useParams();
 
     let urlPrefix = import.meta.env.VITE_URL_PREFIX 

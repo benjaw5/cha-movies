@@ -91,7 +91,7 @@ public class AddStar extends HttpServlet {
                         response.setStatus(200);
                     }
                     else{
-                        System.out.println("fuckthis");
+
                         responseJsonObject.addProperty("status", "fail");
                         responseJsonObject.addProperty("message", "fail");
                         response.setStatus(500);
