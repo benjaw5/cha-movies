@@ -84,13 +84,12 @@ CREATE TABLE IF NOT EXISTS employees(
 
 CREATE UNIQUE INDEX index_movies ON  movies ( id, title, year, director);
 
-
 CREATE UNIQUE INDEX index_stars ON  stars ( id, name, birthYear);
-
 
 CREATE UNIQUE INDEX index_genres ON  genres ( id, name);
 
-
 CREATE UNIQUE INDEX index_ratings ON  ratings ( Movieid, rating, numVotes);
 
+CREATE UNIQUE INDEX index_genres_in_movies ON genres_in_movies(genreId, movieId);
 
+CREATE UNIQUE INDEX index_stars_in_movies ON genres_in_movies(starId, movieId);
