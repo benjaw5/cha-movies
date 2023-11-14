@@ -1,6 +1,7 @@
 Youtube Link: https://youtu.be/6tsyDMTBdZ8
 
 CONTRIBUTIONS:
+
 Howard You: reCaptcha, PreparedStatement, Encrypted Password, XML Parser
 
 Benjamin Wu: HTTPS, Dashboard
