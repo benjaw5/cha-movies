@@ -4,6 +4,24 @@ CONTRIBUTIONS:
 Howard You: reCaptcha, PreparedStatement, Encrypted Password, XML Parser
 Benjamin Wu: HTTPS, Dashboard
 
+Filenames with PreparedStatement ():
+/Browse/GenreSevlet
+/Browse/MetaDataServlet
+/Browse/SearchSevlet
+/Browse/SingleGenreServlet
+/Browse/TableNameServlet
+/cart/PaymentServlet
+/cart/SaleServlet
+/Insertions/AddMovie
+/Insertions/AddStar
+/login/eLoginServlet
+/login/LoginServlet
+/MovieRatedServlet
+/SingleMovieServlet
+/SingleStarServlet
+/StarsServlet
+
+
 Optimization Strategies:
 We made use of multithreading when parsing the two different XML files (mains243.xml, actors63.xml) to concurrently parse their information
 into in-memory data structures, and then after joining both threads we parsed the last casts124.xml. Then, using the information stored in these data structures, we inserted the appropriate items into our database using batch-insert, which only executes an insertion for every 100 rows.
