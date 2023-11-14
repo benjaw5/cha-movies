@@ -63,22 +63,33 @@ public class SearchServlet extends HttpServlet {
             String title = request.getParameter("title");
 
             // Generate a SQL query
-            String query = String.format("SELECT m.id, m.title, m.year, m.director, r.rating, \n" +
-                    "substring_index(group_concat(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name), ',', 3) genres,\n" +
-                    "substring_index(group_concat(DISTINCT CONCAT(s.id, ':', s.name) order by num_movies.num_movies desc, s.name), ',', 3) stars FROM \n" +
-                    "(SELECT * FROM movies m HAVING m.director LIKE '%1$s%4$s%1$s' AND m.title LIKE '%1$s%5$s%1$s') m\n" +
-                    "LEFT JOIN ratings r ON m.id = r.movieId\n" +
-                    "JOIN genres_in_movies gm ON m.id = gm.movieId\n" +
-                    "JOIN genres g ON gm.genreId = g.id\n" +
-                    "JOIN stars_in_movies sm ON m.id = sm.movieId\n" +
+            String query = String.format("WITH MoviesFiltered AS (\n" +
+                    "    SELECT DISTINCT * FROM movies m GROUP BY m.id \n" +
+                    "    HAVING m.director LIKE '%1$s%4$s%1$s' AND m.title LIKE '%1$s%5$s%1$s' \n" +
+                    "    AND ELT(if('%3$s' = '', 2, 1), m.year = '%3$s', m.year = min(m.year) < m.year < min(m.year)) \n" +
+                    "),\n" +
+                    "\n" +
+                    "StarsRanked AS ( \n" +
+                    "SELECT sm.starId, s.name, count(sm.movieId) count \n" +
+                    "FROM stars_in_movies sm\n" +
+                    "JOIN MoviesFiltered m on sm.movieId = m.id\n" +
                     "JOIN stars s ON s.id = sm.starId \n" +
-                    "JOIN (select sm.starId as id, count(distinct m.id) as num_movies\n" +
-                    "\tFROM stars_in_movies sm \n" +
-                    "    join movies m on sm.movieId = m.id\n" +
-                    "\tgroup by sm.starId) num_movies on num_movies.id = s.id\n" +
-                    "GROUP BY m.id, m.title, m.year, m.director, r.rating, r.rating\n" +
-                    "having group_concat(DISTINCT s.name) like '%1$s%2$s%1$s'\n" +
-                    "and ELT(if('%3$s' = '', 2, 1), m.year = '%3$s', m.year = min(m.year) < m.year < min(m.year));","%", stars, year,director, title);
+                    "GROUP BY sm.starId, s.name \n" +
+                    ")\n" +
+                    "\n" +
+                    "\n" +
+                    "SELECT m.id, m.title, m.year, m.director, r.rating, \n" +
+                    "(SELECT substring_index(group_concat(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name), ',', 3) \n" +
+                    "FROM genres_in_movies gm\n" +
+                    "JOIN genres g ON gm.movieId = m.id AND gm.genreId = g.id) genres,\n" +
+                    "(SELECT substring_index(GROUP_CONCAT(DISTINCT CONCAT(sr.starId, ':', sr.name) ORDER BY sr.count DESC SEPARATOR ',' ), ',', 3)\n" +
+                    "FROM StarsRanked sr \n" +
+                    "JOIN stars_in_movies sm ON sr.starId = sm.starId AND sm.movieId = m.id \n" +
+                    "GROUP BY sm.movieId \n" +
+                    "LIMIT 3) stars\n" +
+                    "FROM MoviesFiltered m\n" +
+                    "LEFT JOIN ratings r ON m.id = r.movieId\n" +
+                    "having stars like '%1$s%2$s%1$s';","%", stars, year,director, title);
 
             // Log to localhost log
             request.getServletContext().log("query：" + query);
