@@ -1,25 +1,26 @@
-Youtube Link: https://youtu.be/LGNZH3G7ae0
+Youtube Link: https://youtu.be/6tsyDMTBdZ8
 
 CONTRIBUTIONS:
 Howard You: reCaptcha, PreparedStatement, Encrypted Password, XML Parser
+
 Benjamin Wu: HTTPS, Dashboard
 
 Filenames with PreparedStatement:
-/Browse/GenreSevlet
-/Browse/MetaDataServlet
-/Browse/SearchSevlet
-/Browse/SingleGenreServlet
-/Browse/TableNameServlet
-/cart/PaymentServlet
-/cart/SaleServlet
-/Insertions/AddMovie
-/Insertions/AddStar
-/login/eLoginServlet
-/login/LoginServlet
-/MovieRatedServlet
-/SingleMovieServlet
-/SingleStarServlet
-/StarsServlet
+./Browse/GenreSevlet
+./Browse/MetaDataServlet
+./Browse/SearchSevlet
+./Browse/SingleGenreServlet
+./Browse/TableNameServlet
+./cart/PaymentServlet
+./cart/SaleServlet
+./Insertions/AddMovie
+./Insertions/AddStar
+./login/eLoginServlet
+./login/LoginServlet
+./MovieRatedServlet
+./SingleMovieServlet
+./SingleStarServlet
+./StarsServlet
 
 
 Optimization Strategies:
