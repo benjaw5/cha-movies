@@ -92,4 +92,4 @@ CREATE UNIQUE INDEX index_ratings ON  ratings ( Movieid, rating, numVotes);
 
 CREATE UNIQUE INDEX index_genres_in_movies ON genres_in_movies(genreId, movieId);
 
-CREATE UNIQUE INDEX index_stars_in_movies ON genres_in_movies(starId, movieId);
+CREATE UNIQUE INDEX index_stars_in_movies ON stars_in_movies(starId, movieId);

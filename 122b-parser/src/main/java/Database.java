@@ -114,7 +114,7 @@ public class Database {
         try {
             conn.setAutoCommit(false);
 
-            String starMovieQuery = "insert into stars_in_movies (starId, movieId) values(?, ?)";
+            String starMovieQuery = "insert ignore into stars_in_movies (starId, movieId) values(?, ?)";
             PreparedStatement starMovieStatement = conn.prepareStatement(starMovieQuery);
 
             int starMapSize = starMap.size();
@@ -150,7 +150,7 @@ public class Database {
         int starsInsertedCount = 0;
         try  {
             conn.setAutoCommit(false);
-            String starQuery = "insert into stars (id, name, birthYear) values(?, ?, ?)";
+            String starQuery = "insert ignore into stars (id, name, birthYear) values(?, ?, ?)";
             PreparedStatement starStatement = conn.prepareStatement(starQuery);
 
 
@@ -188,14 +188,14 @@ public class Database {
         try {
             conn.setAutoCommit(false);
 
-            String movieQuery = "insert into movies (id, title, year, director) values(?, ?, ?, ?);";
+            String movieQuery = "insert ignore into movies (id, title, year, director) values(?, ?, ?, ?);";
             PreparedStatement movieStatement = conn.prepareStatement(movieQuery);
 
             int genreId = getLastGenreId() + 1;
-            String genreQuery = "insert into genres (id, name) values(?, ?)";
+            String genreQuery = "insert ignore into genres (id, name) values(?, ?)";
             PreparedStatement genreStatement = conn.prepareStatement(genreQuery);
 
-            String genresInMoviesQuery = "insert into genres_in_movies (genreId, movieId) values (?, ?)";
+            String genresInMoviesQuery = "insert ignore into genres_in_movies (genreId, movieId) values (?, ?)";
             PreparedStatement genresInMoviesStatement = conn.prepareStatement(genresInMoviesQuery);
 
             int movieSize = movies.size();
