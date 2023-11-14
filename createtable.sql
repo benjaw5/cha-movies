@@ -75,6 +75,13 @@ CREATE TABLE IF NOT EXISTS ratings(
     FOREIGN KEY(movieId) REFERENCES movies(id)
 );
 
+CREATE TABLE IF NOT EXISTS employees(
+    email varchar(50) not null,
+    password varchar(20) not null,
+    fullname varchar(100),
+    primary key(email)
+);
+
 CREATE UNIQUE INDEX index_movies ON  movies ( id, title, year, director);
 
 
