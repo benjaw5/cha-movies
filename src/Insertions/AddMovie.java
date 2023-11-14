@@ -55,6 +55,8 @@ public class AddMovie extends HttpServlet {
 
         JsonObject responseJsonObject = new JsonObject();
 
+
+
         if (param_star_name.isEmpty() || param_genre.isEmpty() ||
                 param_movie_title.isEmpty() || param_movie_director.isEmpty() ||
                 param_movie_year.isEmpty()){
@@ -64,6 +66,9 @@ public class AddMovie extends HttpServlet {
             out.write(responseJsonObject.toString());
         }
         else{
+            if(param_birth_year.isEmpty()){
+                param_birth_year = null;
+            }
             // Get a connection from dataSource and let resource manager close the connection after usage.
             try (Connection conn = dataSource.getConnection()) {
 
