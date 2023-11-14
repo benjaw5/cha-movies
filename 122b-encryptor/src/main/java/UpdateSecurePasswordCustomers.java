@@ -22,8 +22,8 @@ public class UpdateSecurePasswordCustomers {
      */
     public static void main(String[] args) throws Exception {
 
-        String loginUser = "root";
-        String loginPasswd = "newpassword";
+        String loginUser = "mytestuser";
+        String loginPasswd = "My6$Password";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
 
         Class.forName("com.mysql.jdbc.Driver").newInstance();
