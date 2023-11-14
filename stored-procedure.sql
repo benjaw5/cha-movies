@@ -1,3 +1,4 @@
+use moviedb;
 drop procedure if exists add_movie;
 
 DELIMITER //
@@ -13,6 +14,7 @@ BEGIN
 	DECLARE new_movie_id varchar(10);
 	DECLARE new_star_id varchar(10);
 	DECLARE new_genre_id int;
+    DECLARE status varchar(100);
     
     main_block: Begin
     
@@ -21,11 +23,16 @@ BEGIN
     where title = movie_title and year = movie_year and director = movie_director;
     
     if new_movie_id is not null then
-		SELECT 'Movie ID already exists. No changes made.' AS status;
-		leave main_block;
+		SELECT 'Duplicate' INTO status;
+        SELECT null INTO new_movie_id;
+        SELECT null INTO new_star_id;
+        SELECT null INTO new_genre_id;
+		select new_movie_id, new_star_id, new_genre_id, status;
+        leave main_block;
 	else
 		select concat(SUBSTRING(max(id), 1, 2), CAST(SUBSTRING(max(id), 3) AS UNSIGNED) + 1) into new_movie_id
 		from movies;
+        SELECT 'Success' INTO status;
     end if;
     
     select id into new_star_id
@@ -63,7 +70,9 @@ BEGIN
     insert into genres_in_movies
     values (new_genre_id, new_movie_id);
     
+    
+    select new_movie_id, new_star_id, new_genre_id, status;
+    
 	END main_block;
 END //
 DELIMITER ;
-
