@@ -67,7 +67,7 @@ public class SearchServlet extends HttpServlet {
                     "substring_index(group_concat(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name), ',', 3) genres,\n" +
                     "substring_index(group_concat(DISTINCT CONCAT(s.id, ':', s.name) order by num_movies.num_movies desc, s.name), ',', 3) stars FROM \n" +
                     "(SELECT * FROM movies m HAVING m.director LIKE '%1$s%4$s%1$s' AND m.title LIKE '%1$s%5$s%1$s') m\n" +
-                    "JOIN ratings r ON m.id = r.movieId\n" +
+                    "LEFT JOIN ratings r ON m.id = r.movieId\n" +
                     "JOIN genres_in_movies gm ON m.id = gm.movieId\n" +
                     "JOIN genres g ON gm.genreId = g.id\n" +
                     "JOIN stars_in_movies sm ON m.id = sm.movieId\n" +
