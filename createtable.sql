@@ -82,14 +82,19 @@ CREATE TABLE IF NOT EXISTS employees(
     primary key(email)
 );
 
-CREATE UNIQUE INDEX index_movies ON  movies ( id, title, year, director);
+CREATE UNIQUE INDEX index_movies ON  movies ( id, year);
+ALTER TABLE movies ADD FULLTEXT(title);
+ALTER TABLE movies ADD FULLTEXT(director);
 
-CREATE UNIQUE INDEX index_stars ON  stars ( id, name, birthYear);
+CREATE UNIQUE INDEX index_stars ON  stars ( id, birthYear);
+ALTER TABLE stars ADD FULLTEXT(name);
 
-CREATE UNIQUE INDEX index_genres ON  genres ( id, name);
+CREATE UNIQUE INDEX index_genres ON  genres ( id);
+ALTER TABLE genres ADD FULLTEXT(name);
 
 CREATE UNIQUE INDEX index_ratings ON  ratings ( Movieid, rating, numVotes);
 
 CREATE UNIQUE INDEX index_genres_in_movies ON genres_in_movies(genreId, movieId);
 
 CREATE UNIQUE INDEX index_stars_in_movies ON stars_in_movies(starId, movieId);
+

@@ -83,5 +83,33 @@ public final class SQLQueries {
             "JOIN stars s ON sm.starId = s.id\n" +
             "GROUP BY m.id, m.title, m.year, m.director, r.rating;";
 
-
+    public String SEARCH_QUERY(String limit) {
+        return
+        "WITH MoviesFiltered AS (\n" +
+                "    SELECT DISTINCT * FROM movies m \n" +
+                "    WHERE MATCH(m.title) AGAINST (? IN BOOLEAN MODE) \n" +
+                " LIMIT " + limit +
+                "),\n" +
+                "\n" +
+                "StarsRanked AS ( \n" +
+                "SELECT sm.starId, s.name, count(sm.movieId) count \n" +
+                "FROM stars_in_movies sm\n" +
+                "JOIN MoviesFiltered m on sm.movieId = m.id\n" +
+                "JOIN stars s ON s.id = sm.starId \n" +
+                "GROUP BY sm.starId, s.name \n" +
+                ")\n" +
+                "\n" +
+                "\n" +
+                "SELECT m.id, m.title, m.year, m.director, r.rating, \n" +
+                "(SELECT substring_index(group_concat(DISTINCT CONCAT(g.id, ':', g.name) ORDER BY g.name), ',', 3) \n" +
+                "FROM genres_in_movies gm\n" +
+                "JOIN genres g ON gm.movieId = m.id AND gm.genreId = g.id) genres,\n" +
+                "(SELECT substring_index(GROUP_CONCAT(DISTINCT CONCAT(sr.starId, ':', sr.name) ORDER BY sr.count DESC SEPARATOR ',' ), ',', 3)\n" +
+                "FROM StarsRanked sr \n" +
+                "JOIN stars_in_movies sm ON sr.starId = sm.starId AND sm.movieId = m.id \n" +
+                "GROUP BY sm.movieId \n" +
+                "LIMIT 3) stars\n" +
+                "FROM MoviesFiltered m\n" +
+                "LEFT JOIN ratings r ON m.id = r.movieId;";
+    }
 }

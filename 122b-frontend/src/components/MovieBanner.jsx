@@ -27,7 +27,7 @@ function MovieBanner(movieObject) {
 
  
     return (
-        <tr>
+        <tr key={movie.movie_id}>
             <td><a href={"/cha-movies/movies/"+movie.movie_id}>{movie.movie_title}</a></td>
             <td>{movie.movie_year}</td>
             <td>{movie.movie_director}</td>

@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+ import {useState, useEffect} from 'react'
 import {useParams} from "react-router-dom";
 import ActorLink from '../components/ActorLink';
 import getSingleMovie from '../api/singleMovie';

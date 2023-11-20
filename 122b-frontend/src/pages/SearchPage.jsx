@@ -29,12 +29,9 @@ function SearchPage() {
     const location = useLocation();
     const query = new URLSearchParams(location.search)
     const title = query.get('title');
-    const director = query.get('director');
-    const stars = query.get('stars');
-    const year = query.get('year');
 
     useEffect(() => {
-        search(title, director, stars, year).then(data => {
+        search(title).then(data => {
             data = sortMovieData(data, sortOrder, sortTitle, sortRating);
             setTotalMovies(data.length)
 
