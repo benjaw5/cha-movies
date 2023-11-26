@@ -29,8 +29,8 @@ public class Database {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:mysql://localhost:3306/moviedb?rewriteBatchedStatements=true");
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        config.setUsername("root");
-        config.setPassword("wDn5L4f17%F6");
+        config.setUsername("mytestuser");
+        config.setPassword("My6$Password");
 
         dataSource = new HikariDataSource(config);
 
