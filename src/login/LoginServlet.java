@@ -37,18 +37,26 @@ public class LoginServlet extends HttpServlet {
         String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String android = request.getParameter("android");
+        boolean bypass = false;
+        if(android.equals("true")){
+            bypass = true;
+        }
 
+        System.out.println("Username: " + email + " Password: " + password + " Android: " + android);
         JsonObject responseJsonObject = new JsonObject();
         PrintWriter out = response.getWriter();
 
-        try {
-            RecaptchaVerifyUtils.verify(gRecaptchaResponse);
-        } catch (Exception e) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("errorMessage", "reCaptcha not satisfied");
-            out.write(jsonObject.toString());
-            response.setStatus(500);
-            return;
+        if(!bypass){
+            try {
+                RecaptchaVerifyUtils.verify(gRecaptchaResponse);
+            } catch (Exception e) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("errorMessage", "reCaptcha not satisfied");
+                out.write(jsonObject.toString());
+                response.setStatus(500);
+                return;
+            }
         }
 
         try (Connection conn = dataSource.getConnection()) {
