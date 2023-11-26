@@ -57,7 +57,7 @@ public class LoginFilter implements Filter {
         adminRequiredURIs.add("/cha-movies/_dashboard");
 
         allowedURIs.add("login");
-        allowedURIs.add("/cha-movies/assets/index-cbcf04ca.js");
+        allowedURIs.add("/cha-movies/assets/index-196b0280.js");
         allowedURIs.add("/cha-movies/vite.svg");
         allowedURIs.add("/cha-movies/api/login");
         allowedURIs.add("/cha-movies/api/signup");
