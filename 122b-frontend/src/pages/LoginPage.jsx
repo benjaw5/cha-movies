@@ -33,7 +33,7 @@ function LoginPage() {
         try {
             const response = await fetch(apiLink, {
                 method: 'POST',
-                body: `email=${email}&password=${password}&g-recaptcha-response=${recaptchaResponse}`,
+                body: `email=${email}&password=${password}&g-recaptcha-response=${recaptchaResponse}&android=false`,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 }

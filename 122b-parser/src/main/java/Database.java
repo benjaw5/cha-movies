@@ -30,7 +30,7 @@ public class Database {
         config.setJdbcUrl("jdbc:mysql://localhost:3306/moviedb?rewriteBatchedStatements=true");
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.setUsername("root");
-        config.setPassword("newpassword");
+        config.setPassword("wDn5L4f17%F6");
 
         dataSource = new HikariDataSource(config);
 
