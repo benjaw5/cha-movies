@@ -32,10 +32,10 @@ public class MovieListActivity extends AppCompatActivity {
     private double maxPage;
     private TextView pageNum;
     private final ArrayList<Movie> movies = new ArrayList<>();
-    private final String host = "10.0.2.2";
-    private final String port = "8000";
+    private final String host = "cha-movies.shop";
+    private final String port = "8443";
     private final String domain = "cha-movies";
-    private final String baseURL = "http://" + host + ":" + port + "/" + domain;
+    private final String baseURL = "https://" + host + ":" + port + "/" + domain;
 
 
     @Override
