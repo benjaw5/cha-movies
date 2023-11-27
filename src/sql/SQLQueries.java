@@ -85,14 +85,13 @@ public final class SQLQueries {
 
     public String SEARCH_QUERY(String limit) {
         return
-        "WITH MoviesFiltered AS (\n" +
-                "    SELECT DISTINCT * FROM movies m \n" +
-                "WHERE MATCH(m.title) AGAINST (? IN BOOLEAN MODE)\n" +
-                "   OR edth(m.title, ?, CASE WHEN LENGTH(?) <= 4 THEN 1 ELSE 4 END)\n" +
-                "ORDER BY\n" +
-                "  MATCH(m.title) AGAINST (? IN BOOLEAN MODE) DESC,\n" +
-                "  edth(m.title, ?, CASE WHEN LENGTH(?) <= 4 THEN 1 ELSE 4 END) DESC" +
-                " LIMIT " + limit +
+        "WITH MoviesFiltered AS (SELECT *\n" +
+                "FROM movies m\n" +
+                "WHERE edth(m.title, ?, CASE WHEN LENGTH(?) <= 5 THEN 1 ELSE 5 END) \n" +
+                "UNION\n" +
+                "SELECT *\n" +
+                "FROM movies m\n" +
+                "WHERE MATCH(m.title) AGAINST (? IN BOOLEAN MODE) LIMIT " + limit +
                 "),\n" +
                 "\n" +
                 "StarsRanked AS ( \n" +
