@@ -55,6 +55,7 @@ public class AutocompleteServlet extends HttpServlet {
             String AutocompleteQuery = sqlQueries.SEARCH_QUERY("10");
             PreparedStatement statement = dbCon.prepareStatement(AutocompleteQuery);
             statement.setString(1, prefix_title);
+            statement.setString(2, param_title);
 
             ResultSet rs = statement.executeQuery();
 

@@ -56,6 +56,7 @@ public class SearchServlet extends HttpServlet {
             String AutocompleteQuery = sqlQueries.SEARCH_QUERY("18446744073709551615");
             PreparedStatement statement = dbCon.prepareStatement(AutocompleteQuery);
             statement.setString(1, prefix_title);
+            statement.setString(2, param_title);
 
             ResultSet rs = statement.executeQuery();
 
