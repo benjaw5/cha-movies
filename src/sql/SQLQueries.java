@@ -87,9 +87,7 @@ public final class SQLQueries {
         return
         "WITH MoviesFiltered AS (\n" +
                 "    SELECT DISTINCT * FROM movies m \n" +
-                "    WHERE MATCH(m.title) AGAINST (? IN BOOLEAN MODE) or LENGTH(?) <= 2 AND edth(m.title, ?, 0)\n" +
-                "  OR\n" +
-                "LENGTH(?) > 2 AND edth(m.title, ?, 3);\n" +
+                "    WHERE MATCH(m.title) AGAINST (? IN BOOLEAN MODE) or edth(m.title, ?, CASE WHEN LENGTH(?) <= 1 THEN 2 ELSE 4 END);\n" +
                 " LIMIT " + limit +
                 "),\n" +
                 "\n" +

@@ -58,8 +58,6 @@ public class SearchServlet extends HttpServlet {
             statement.setString(1, prefix_title);
             statement.setString(2, param_title);
             statement.setString(3, param_title);
-            statement.setString(4, param_title);
-            statement.setString(5, param_title);
 
             ResultSet rs = statement.executeQuery();
 
