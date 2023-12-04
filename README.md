@@ -31,6 +31,10 @@
   ./src/login/eLoginServlet.java
   ./src/login/LoginServlet.java
     - #### Explain how Connection Pooling is utilized in the Fabflix code.
+The connection pool in our code has a max of 100 connections that can be reused when unallocated and requested by a servlet. After the connection is closed by the servlet, it goes back into the connection pool. In our pool, at most 30 connections can stay idle, if more than 30, our pool releases the extra connections. 
+
+When a servlet requests a connection, there is a max wait limit of 10 seconds to find a connection in the pool before an exception is thrown. 
+  
     
     - #### Explain how Connection Pooling works with two backend SQL.
     
