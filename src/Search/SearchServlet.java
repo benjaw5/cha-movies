@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import sql.SQLQueries;
 
 import javax.sql.DataSource;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -23,12 +24,20 @@ import java.sql.ResultSet;
 @WebServlet(name = "Search", urlPatterns = "/api/search")
 public class SearchServlet extends HttpServlet {
 
+    long elapsedTimeTJ;
+    long startTime;
+    long endTime;
     SQLQueries sqlQueries = new SQLQueries();
     private DataSource dataSource;
 
     public void init(ServletConfig config) {
+        elapsedTimeTJ = 0;
         try {
+            startTime = System.nanoTime();
             dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            endTime = System.nanoTime();
+            elapsedTimeTJ += endTime - startTime;
+
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -43,8 +52,10 @@ public class SearchServlet extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
+        startTime = System.nanoTime();
         try (out; Connection dbCon = dataSource.getConnection()) {
-
+            endTime = System.nanoTime();
+            elapsedTimeTJ += endTime - startTime;
             // Create a new connection to database
 
 
@@ -53,15 +64,18 @@ public class SearchServlet extends HttpServlet {
             String prefix_title = param_title + " ";
             prefix_title = prefix_title.replaceAll("\\s+", "* ");
 
+
+            startTime = System.nanoTime();
             String AutocompleteQuery = sqlQueries.SEARCH_QUERY("18446744073709551615");
             PreparedStatement statement = dbCon.prepareStatement(AutocompleteQuery);
             statement.setString(1, prefix_title);
 
             ResultSet rs = statement.executeQuery();
+            endTime = System.nanoTime();
+            elapsedTimeTJ += endTime - startTime;
 
             JsonArray jsonArray = new JsonArray();
             while (rs.next()) {
-
                 String movie_id = rs.getString("id");
                 String movie_title = rs.getString("title");
                 String movie_year = rs.getString("year");
@@ -85,10 +99,12 @@ public class SearchServlet extends HttpServlet {
 
 
             // Close all structures
+            startTime = System.nanoTime();
             rs.close();
             statement.close();
             dbCon.close();
-
+            endTime = System.nanoTime();
+            elapsedTimeTJ += endTime - startTime;
 
             out.write(jsonArray.toString());
 
@@ -102,6 +118,9 @@ public class SearchServlet extends HttpServlet {
         }
         finally {
             out.close();
+            FileWriter file = new FileWriter("F:\\School\\CS-122B\\cha-movies\\time-log\\timeTJ.txt", true);
+            file.write(String.valueOf(elapsedTimeTJ)+"\n");
+            file.close();
         }
     }
 }

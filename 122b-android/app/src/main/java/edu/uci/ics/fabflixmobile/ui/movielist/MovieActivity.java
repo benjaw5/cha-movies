@@ -33,10 +33,10 @@ import org.json.JSONObject;
 
 public class MovieActivity extends AppCompatActivity {
 
-    private final String host = "cha-movies.shop";
-    private final String port = "8443";
+    private final String host = "10.0.2.2";
+    private final String port = "8000";
     private final String domain = "cha-movies";
-    private final String baseURL = "https://" + host + ":" + port + "/" + domain;
+    private final String baseURL = "http://" + host + ":" + port + "/" + domain;
 
     private TextView title;
     private TextView year;

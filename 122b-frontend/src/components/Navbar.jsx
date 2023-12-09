@@ -21,7 +21,6 @@ function Navbar() {
                         const newArray = data.map(m => ({label: m.movie_title+" ("+m.movie_year+")", id: m.movie_id, title: m.movie_title}))
                         setAutoComplete(newArray)
                         localStorage.setItem(inputTitle, JSON.stringify(newArray))
-                        console.log(newArray)
                     }
                 })
             }
