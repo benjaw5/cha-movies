@@ -24,19 +24,15 @@ import java.sql.ResultSet;
 @WebServlet(name = "Search", urlPatterns = "/api/search")
 public class SearchServlet extends HttpServlet {
 
-    long elapsedTimeTJ;
+    long elapsedTimeTJ = 0;
     long startTime;
     long endTime;
     SQLQueries sqlQueries = new SQLQueries();
     private DataSource dataSource;
 
     public void init(ServletConfig config) {
-        elapsedTimeTJ = 0;
         try {
-            startTime = System.nanoTime();
             dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
-            endTime = System.nanoTime();
-            elapsedTimeTJ += endTime - startTime;
 
         } catch (NamingException e) {
             e.printStackTrace();
@@ -46,7 +42,7 @@ public class SearchServlet extends HttpServlet {
     // Use http GET
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-
+        elapsedTimeTJ = 0;
         response.setContentType("text/html");    // Response mime type
 
         // Output stream to STDOUT
