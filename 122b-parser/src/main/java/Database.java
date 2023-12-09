@@ -27,7 +27,7 @@ public class Database {
     public Database() throws Exception {
 
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://172.31.3.64:3306/moviedb?rewriteBatchedStatements=true");
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/moviedb?rewriteBatchedStatements=true");
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.setUsername("mytestuser");
         config.setPassword("My6$Password");
