@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         String android = request.getParameter("android");
         boolean bypass = false;
-        if(android.equals("true")){
+        if(android != null && android.equals("true")){
             bypass = true;
         }
 
