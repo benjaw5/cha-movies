@@ -115,14 +115,14 @@ python ./log_processing.py TJ1 TS1
 
 | **Single-instance Version Test Plan**          | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
 |------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
-| Case 1: HTTP/1 thread                          | ![](path to image in img/)   | 81                        | 30.67733821783363                   |  20.420948128266506      | ??           |
-| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | 214                        |   184.87746761318564                 |  18.384260016846852         | ??           |
-| Case 3: HTTPS/10 threads                       | ![](path to image in img/)   | 194                         | 170.76422187833057                  | 18.61608283533758          | ??           |
+| Case 1: HTTP/1 thread                          | ![](path to image in img/)   | 81                        | 30.67733821783363                   |  20.420948128266506      | It seems like servlet time takes most of the query time when querying.           |
+| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | 214                        |   184.87746761318564                 |  18.384260016846852         | The time for search servlet is the majority of the query time.            |
+| Case 3: HTTPS/10 threads                       | ![](path to image in img/)   | 194                         | 170.76422187833057                  | 18.61608283533758          | The time for search servlet is the majority of the query time.           |
 | Case 4: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
 
 | **Scaled Version Test Plan**                   | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
 |------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
-| Case 1: HTTP/1 thread                          | ![](path to image in img/)   | 83                         |  21.66625855465587                  | 20.44821045237588         | ??           |
-| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | 136                        | 66.11203849605563                  | 13.458691226781067        | ??           |
+| Case 1: HTTP/1 thread                          | ![](path to image in img/)   | 83                         |  21.66625855465587                  | 20.44821045237588         | The time for both JDBC and Servlet are roughly the same.           |
+| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | 136                        | 66.11203849605563                  | 13.458691226781067        | The time for Servlet is the majority of the query time.           |
 | Case 3: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
 
