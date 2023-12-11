@@ -41,8 +41,41 @@ When a servlet requests a connection, there is a max wait limit of 10 seconds to
 
 - # Master/Slave
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
-
+  ./src/Insertions/AddMovie.java
+  ./src/Insertions/AddStar.java
+  ./src/cart/SaleServlet.java
     - #### How read/write requests were routed to Master/Slave SQL?
+    In the Master/Slave instances requests were routed through the context.xml resources. We made all read requests go through the local host MySQL and for write requests we made all requests go through the master MySQL database.
+ 
+    <?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+
+    <!-- Defines a Data Source Connecting to localhost moviedbexample-->
+    <Resource
+            name="jdbc/moviedb"
+            auth="Container"
+            driverClassName="com.mysql.cj.jdbc.Driver"
+            factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+            maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+            type="javax.sql.DataSource"
+            username="root"
+            password="newpassword"
+            url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
+
+    <Resource
+            name="master"
+            auth="Container"
+            driverClassName="com.mysql.cj.jdbc.Driver"
+            factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+            maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+            type="javax.sql.DataSource"
+            username="root"
+            password="newpassword"
+            url="jdbc:mysql://172.31.3.64:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
+
+
+</Context>
     
 
 - # JMeter TS/TJ Time Logs
