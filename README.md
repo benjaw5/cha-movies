@@ -6,7 +6,34 @@
     - #### Project 5 Video Demo Link:
     https://youtu.be/O8rstOzKhe8
     - #### Instruction of deployment:
+Assuming Java, MySql, Tomcat10, AWS, and Maven installed
+    - MySql should have the user mytestuser with all the access required
+Git clone the repository 
+    git clone https://github.com/uci-jherold2-fall23-cs122b/2023-fall-cs122b-team-cha.git
+Go into the 2023-fall-cs122b-team-cha directory
+Create the database moviedb using createtable.sql
+Create the stored procedure using stored-procedure.sql
+Populate moviedb database with movie-data.sql
+CD into 122b-encryptor directory run the following commands:
+    mvn compile
+    mvn exec:java -Dexec.cleanupDaemonThreads=false -Dexec.mainClass="UpdateSecurePasswordCustomers"
+    mvn exec:java -Dexec.cleanupDaemonThreads=false -Dexec.mainClass="UpdateSecurePasswordEmployee"
+CD out of 122b-encryptor directory
+CD into 122b-parser directory run the following commands:
+    mvn package
+    java -cp target/122b-parser-0.0.1-SNAPSHOT.jar DomParser
+CD out of 122b-parser directory
+You should be in 2023-fall-cs122b-team-cha directory
+Run this command there shouldn't be a war file yet:
+    ls -lah /var/lib/tomcat10/webapps/
+Run the following commands to build the war file for 2023-fall-cs122b-team-cha:
+    mvn package
+    sudo cp ./target/*.war /var/lib/tomcat10/webapps/
+Run this command there should be a war file now:
+    ls -lah /var/lib/tomcat10/webapps/
+Go the deployed website
     
+
     - #### Collaborations and Work Distribution:
 
   
@@ -35,7 +62,7 @@
 
 When a servlet requests a connection, there is a max wait limit of 10 seconds to find a connection in the pool before an exception is thrown.
     - #### Explain how Connection Pooling works with two backend SQL.
-
+    The connection pool in our code for the two backend SQL is that each backend has a max of 100 connections that can be reused when unallocated and requested by a servlet. After the connection is closed by the servlet, it goes back into the connection pool. In our pool, at most 30 connections can stay idle, if more than 30, our pool releases the extra connections.
 
     
 
@@ -72,7 +99,7 @@ When a servlet requests a connection, there is a max wait limit of 10 seconds to
             type="javax.sql.DataSource"
             username="root"
             password="newpassword"
-            url="jdbc:mysql://172.31.3.64:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
+            url="jdbc:mysql://<MASTER PRIVATE IP>:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
 
 
 </Context>
