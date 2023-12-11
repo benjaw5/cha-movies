@@ -8,7 +8,7 @@
     - #### Instruction of deployment:
     
     - #### Collaborations and Work Distribution:
-    Howard You: Task 1, Task 2, Task 3, Task 4
+
   
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
