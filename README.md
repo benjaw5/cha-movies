@@ -89,7 +89,7 @@ python ./log_processing.py TJ1 TS1
 | **Single-instance Version Test Plan**          | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
 |------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
 | Case 1: HTTP/1 thread                          | ![](path to image in img/)   | 83                        | 66.11203849605563                   |  13.458691226781067      | ??           |
-| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | 136                        |  66.11203849605563                 | 20.44821045237588         | ??           |
+| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | 214                        |   184.87746761318564                 |  18.384260016846852         | ??           |
 | Case 3: HTTPS/10 threads                       | ![](path to image in img/)   | 194                         | 170.76422187833057                  | 18.61608283533758          | ??           |
 | Case 4: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
 
