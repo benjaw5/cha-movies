@@ -124,5 +124,5 @@ python ./log_processing.py TJ1 TS1
 |------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
 | Case 1: HTTP/1 thread                          | ![](/img/scaled1thread.png/)   | 83                         |  21.66625855465587                  | 20.44821045237588         | The time for both JDBC and Servlet are roughly the same.           |
 | Case 2: HTTP/10 threads                        | ![](/img/scaled10threadspooling.png/)   | 136                        | 66.11203849605563                  | 13.458691226781067        | The time for Servlet is the majority of the query time.           |
-| Case 3: HTTP/10 threads/No connection pooling  | ![](/img/scaled10threadsnopooling.png/)   | 153                         | 79.86636647227525                   | 31.866251207349876        | ??           |
+| Case 3: HTTP/10 threads/No connection pooling  | ![](/img/scaled10threadsnopooling.png/)   | 153                         | 79.86636647227525                   | 31.866251207349876        | Since there is no connection pooling the times for querying, search, and JDBC are worse than the other respective scaled testings           |
 
