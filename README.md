@@ -1,45 +1,62 @@
-Youtube Link: https://youtu.be/6tsyDMTBdZ8
+- # General
+    - #### Team#: 
+    team-cha
+    - #### Names:
+    Howard You, Benjamin Wu
+    - #### Project 5 Video Demo Link:
+    https://youtu.be/O8rstOzKhe8
+    - #### Instruction of deployment:
+    
+    - #### Collaborations and Work Distribution:
+    Howard You: Task 1, Task 2, Task 3, Task 4, Readme, Submission
+  
+- # Connection Pooling
+    - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
+  ./src/MovieRatedServlet.java
+  ./src/SingleMovieServlet.java
+  ./src/SingleStarServlet.java
+  ./src/StarsServlet.java
+  ./src/Browse/GenreServlet.java
+  ./src/Browse/MetaDataServlet.java
+  ./src/Browse/SingleGenreServlet.java
+  ./src/Browse/SingleTitleServlet.java
+  ./src/Browse/TableNameServlet.java
+  ./src/Insertions/AddMovie.java
+  ./src/Insertions/AddStar.java
+  ./src/Search/AdvancedSearchServlet.java
+  ./src/Search/AutocompleteServlet.java
+  ./src/Search/SearchServlet.java
+  ./src/cart/PaymentServlet.java
+  ./src/cart/SaleServlet.java
+  ./src/login/eLoginServlet.java
+  ./src/login/LoginServlet.java
+    - #### Explain how Connection Pooling is utilized in the Fabflix code.
+    
+    - #### Explain how Connection Pooling works with two backend SQL.
+    
 
-CONTRIBUTIONS:
+- # Master/Slave
+    - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
 
-Howard You: reCaptcha, PreparedStatement, Encrypted Password, XML Parser
+    - #### How read/write requests were routed to Master/Slave SQL?
+    
 
-Benjamin Wu: HTTPS, Dashboard
-
-
-Filenames with PreparedStatement:
-
-./Browse/GenreSevlet
-./Browse/MetaDataServlet
-./Browse/SearchSevlet
-./Browse/SingleGenreServlet
-./Browse/TableNameServlet
-./cart/PaymentServlet
-./cart/SaleServlet
-./Insertions/AddMovie
-./Insertions/AddStar
-./login/eLoginServlet
-./login/LoginServlet
-./MovieRatedServlet
-./SingleMovieServlet
-./SingleStarServlet
-./StarsServlet
+- # JMeter TS/TJ Time Logs
+    - #### Instructions of how to use the `log_processing.*` script to process the JMeter logs.
 
 
+- # JMeter TS/TJ Time Measurement Report
 
-Optimization Strategies:
-We made use of multithreading when parsing the two different XML files (mains243.xml, actors63.xml) to concurrently parse their information
-into in-memory data structures, and then after joining both threads, we parsed the last casts124.xml. Then, using the information stored in these data structures, we inserted the appropriate items into our database using batch-insert, which only executes an insertion for every 100 rows. Multithreading allows us to speed up the parsing process as opposed to the naive approach, because the naive approach parses files after each other, while multithreading concurrently parses the files. Batch insertion speeds up the insertion process into our database when compared to the naive approach because it doesn't insert every single row of data individually. Individually inserting each row would force our database to serve thousands of insertion queries instead of just a few using batch insert.
+| **Single-instance Version Test Plan**          | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
+|------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
+| Case 1: HTTP/1 thread                          | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+| Case 3: HTTPS/10 threads                       | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+| Case 4: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
 
+| **Scaled Version Test Plan**                   | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
+|------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
+| Case 1: HTTP/1 thread                          | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+| Case 3: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
 
-Parser Report:
-Inserted 8724 movies
-Inserted 124 genres
-Inserted 9784 genres_in_movies
-Inserted 6839 stars
-Inserted 25782 stars_in_movies
-3363 films inconsistent
-28 films duplicate
-24 stars duplicate
-1592 movies not found
-16801 stars not found in cast
